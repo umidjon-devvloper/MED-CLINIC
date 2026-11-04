@@ -23,18 +23,19 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const doc = doctors.find((d) => d.id === id);
   if (!doc) return { title: "Shifokor topilmadi" };
   const desc = doc.bio?.slice(0, 160) ?? `${doc.specialty}, ${doc.experience} yil tajriba. Qabulga yoziling.`;
+  const title = `${doc.name} — ${doc.specialty}`;
   return {
-    title: `${doc.name} — ${doc.specialty}`,
+    title,
     description: desc,
     alternates: { canonical: `/doctors/${doc.id}` },
     openGraph: {
-      title: `${doc.name} — ${doc.specialty}`,
+      title,
       description: desc,
       type: "profile",
       url: `/doctors/${doc.id}`,
-      images: [{ url: doc.photo, alt: doc.name }],
+      siteName: "MED CLINIC",
     },
-    twitter: { card: "summary_large_image", title: doc.name, description: desc, images: [doc.photo] },
+    twitter: { card: "summary_large_image", title, description: desc },
   };
 }
 

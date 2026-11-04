@@ -20,7 +20,9 @@ const fraunces = Fraunces({
   style: ["normal", "italic"],
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://medclinic.uz";
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://medclinic.uz");
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -51,13 +53,13 @@ export const metadata: Metadata = {
     siteName: "MED CLINIC",
     title: "MED CLINIC — Professional Tibbiy Platforma",
     description: "Sog'lig'ingiz — bizning ustuvor vazifamiz. 140+ shifokor, 6 klinika, 60+ xizmat.",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "MED CLINIC" }],
+    images: [{ url: "https://xcq4dt28gh.ufs.sh/f/E4agwseb6qa5DQ4bLGaXWGlLxkpzKJBX8tqohH7mFAnuvMU0", width: 1200, height: 630, alt: "MED CLINIC — Professional Tibbiy Platforma" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "MED CLINIC — Professional Tibbiy Platforma",
     description: "Sog'lig'ingiz — bizning ustuvor vazifamiz.",
-    images: ["/og.png"],
+    images: ["https://xcq4dt28gh.ufs.sh/f/E4agwseb6qa5DQ4bLGaXWGlLxkpzKJBX8tqohH7mFAnuvMU0"],
   },
   robots: {
     index: true,
