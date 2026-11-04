@@ -16,43 +16,26 @@ const tints: Record<string, { tint: string; from: string; to: string }> = {
 export function ServicesSection() {
   const topServices = services.slice(0, 8);
   return (
-    <section className="scroll-reveal py-16 md:py-20 relative overflow-hidden" style={{ background: "linear-gradient(180deg, var(--surface) 0%, #F3F8FF 100%)", borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)" }}>
-      <div className="container-x">
-        <div className="rounded-3xl overflow-hidden mb-10 shadow-[0_20px_50px_rgba(10,31,58,0.06)] relative" style={{ background: "linear-gradient(135deg, #EEF4FD 0%, #E3EDFA 100%)", minHeight: "200px" }}>
-          {/* Background clipboard illustration on the right */}
-          <div className="absolute inset-y-0 right-0 w-[55%] z-0 pointer-events-none overflow-hidden hidden md:block">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/hero/clipboard.webp"
-              alt=""
-              className="absolute top-1/2 right-[-6%] w-[520px] max-w-none h-auto"
-              style={{
-                transform: "translateY(-50%)",
-                mixBlendMode: "multiply",
-                WebkitMaskImage: "linear-gradient(90deg, transparent 0%, #000 35%, #000 75%, transparent 100%)",
-                maskImage: "linear-gradient(90deg, transparent 0%, #000 35%, #000 75%, transparent 100%)",
-              }}
-            />
-          </div>
-          <div className="absolute -top-[30%] right-[10%] w-[380px] h-[380px] rounded-full blur-[50px] z-0 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(77,148,245,0.3), transparent 65%)" }} />
-          <div className="relative z-10 p-6 md:p-12 grid md:grid-cols-[1fr_auto] gap-6 items-center">
-            <div className="max-w-[460px]">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-surface shadow-sm text-brand text-xs font-semibold uppercase tracking-wider rounded-full mb-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand" />
-                Xizmatlar
-              </span>
-              <h2 className="font-display font-semibold text-2xl md:text-[36px] leading-tight text-ink mb-3">
-                Barcha tibbiy <em className="italic text-brand font-medium">yo&apos;nalishlar</em> bir joyda
-              </h2>
-              <p className="text-sm md:text-[14.5px] text-ink-soft max-w-[38ch]">
-                Terapiyadan yuqori texnologiyali diagnostikagacha — 60+ tibbiy xizmat professional shifokorlar nazoratida.
-              </p>
+    <section className="scroll-reveal py-20 md:py-28 relative overflow-hidden" style={{ background: "linear-gradient(180deg, var(--surface) 0%, #F3F8FF 100%)", borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)" }}>
+      <div className="container-wide">
+        {/* Editorial section header — minimal eyebrow + oversize headline */}
+        <div className="flex items-end justify-between gap-8 flex-wrap mb-12 md:mb-16">
+          <div className="max-w-[640px]">
+            <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand mb-5 inline-flex items-center gap-2.5">
+              <span className="w-8 h-px bg-brand" />
+              Tibbiy xizmatlar
             </div>
-            <Link href="/services" style={{ color: "#fff", background: "linear-gradient(135deg, var(--brand) 0%, var(--brand-ink) 100%)" }} className="inline-flex items-center gap-2 px-6 py-3 rounded-full !text-white font-semibold text-sm whitespace-nowrap shadow-[0_8px_20px_rgba(30,109,216,.35)] hover:-translate-y-0.5 transition-transform">
-              Barcha xizmatlar
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            <h2 className="font-display font-normal text-ink leading-[0.98] tracking-[-0.025em]" style={{ fontSize: "clamp(36px, 5.5vw, 68px)" }}>
+              Barcha <em className="italic text-brand">yo&apos;nalishlar</em> — bir joyda.
+            </h2>
+            <p className="text-[15px] md:text-[17px] text-ink-soft mt-5 max-w-[48ch] leading-relaxed">
+              Terapiyadan yuqori texnologiyali diagnostikagacha. 60+ tibbiy xizmat professional shifokorlar nazoratida.
+            </p>
           </div>
+          <Link href="/services" className="group inline-flex items-center gap-2 text-brand hover:text-brand-ink font-semibold text-[14px] border-b-2 border-brand pb-1 transition-colors self-end">
+            Barcha xizmatlar
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">

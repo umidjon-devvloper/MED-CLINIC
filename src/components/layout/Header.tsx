@@ -17,6 +17,20 @@ const navLinks = [
   { href: "/contact", label: "Aloqa" },
 ];
 
+function initialsFor(u: User): string {
+  const a = (u.firstName?.trim()?.[0] || "").toUpperCase();
+  const b = (u.lastName?.trim()?.[0] || "").toUpperCase();
+  if (a || b) return (a + b) || a || b;
+  return u.role === "doctor" ? "DR" : "U";
+}
+
+function displayName(u: User): string {
+  if (u.firstName || u.lastName) {
+    return `${u.role === "doctor" ? "Dr. " : ""}${u.firstName || u.lastName || ""}`.trim();
+  }
+  return u.role === "doctor" ? "Shifokor" : "Foydalanuvchi";
+}
+
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -57,63 +71,67 @@ export function Header() {
 
   return (
     <>
-      <div className="bg-ink text-[#BBD1EC] text-[12.5px] py-3.5 relative" style={{ background: "linear-gradient(90deg, var(--ink) 0%, #0A2A50 50%, var(--ink) 100%)" }}>
-        <div className="container-x flex justify-between items-center gap-4 flex-wrap">
-          <div className="flex gap-4 items-center flex-wrap">
-            <a href="tel:+998712000000" className="inline-flex items-center gap-2 hover:text-white transition-colors">
-              <Phone className="w-[13px] h-[13px] text-accent" />
-              <strong className="text-white font-semibold tracking-wide">+998 71 200 00 00</strong>
+      {/* Slim top strip — just the essentials, no visual weight */}
+      <div className="bg-ink text-[#8AA3C4] text-[11.5px] py-1.5 relative">
+        <div className="container-wide flex justify-between items-center gap-4">
+          <a href="tel:+998712000000" className="inline-flex items-center gap-1.5 hover:text-white transition-colors">
+            <Phone className="w-3 h-3 text-accent" strokeWidth={2.5} />
+            <strong className="text-white font-semibold tracking-wide">+998 71 200 00 00</strong>
+            <span className="hidden md:inline text-[#607994] font-medium">· 24/7</span>
+          </a>
+          <div className="flex gap-4 items-center">
+            <a href="https://t.me/medclinic_uz" className="hidden sm:inline-flex items-center gap-1 hover:text-white">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" /></svg>
+              Telegram
             </a>
-            <span className="hidden md:inline-block w-px h-[14px] bg-white/15" />
-            <span className="hidden md:inline-flex items-center gap-2">24/7 shoshilinch yordam</span>
-          </div>
-          <div className="flex gap-3 items-center">
-            <a href="https://t.me/medclinic_uz" className="inline-flex items-center gap-1.5 hover:text-white">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="w-[13px] h-[13px]"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" /></svg>
-              <span className="hidden sm:inline">Telegram</span>
-            </a>
-            <div className="flex items-center gap-0.5 bg-white/8 rounded-full p-[3px]">
-              <button type="button" className="px-2.5 py-[3px] rounded-full text-[11.5px] font-semibold bg-white text-brand-ink">UZ</button>
-              <button type="button" title="Tez orada — rus tili" disabled className="px-2.5 py-[3px] rounded-full text-[11.5px] font-semibold text-[#8AA3C4] opacity-60 cursor-not-allowed">RU</button>
-              <button type="button" title="Coming soon — English" disabled className="px-2.5 py-[3px] rounded-full text-[11.5px] font-semibold text-[#8AA3C4] opacity-60 cursor-not-allowed">EN</button>
+            <div className="flex items-center gap-2 text-[10.5px] font-bold uppercase tracking-wider">
+              <span className="text-white">UZ</span>
+              <button type="button" title="Tez orada" disabled className="text-[#607994] opacity-60 cursor-not-allowed hover:text-white">RU</button>
+              <button type="button" title="Coming soon" disabled className="text-[#607994] opacity-60 cursor-not-allowed hover:text-white">EN</button>
             </div>
           </div>
         </div>
       </div>
 
-      <nav className="bg-surface border-b py-2 border-line relative z-10 shadow-[0_2px_12px_rgba(10,31,58,0.04)]">
-        <div className="container-x flex items-center gap-4 py-7 md:py-8">
-          <Link href="/" className="flex items-center gap-2.5 font-extrabold text-[1.15rem] tracking-wide">
-            <span className="w-10 h-10 rounded-xl grid place-items-center text-white relative overflow-hidden shadow-[0_6px_16px_rgba(30,109,216,.28)]" style={{ background: "linear-gradient(135deg, var(--brand) 0%, var(--brand-ink) 100%)" }}>
-              <Plus className="w-5 h-5" strokeWidth={2.5} />
-              <span className="absolute top-[-3px] right-[-3px] w-[11px] h-[11px] rounded-full bg-accent border-[2.5px] border-surface shadow-[0_0_10px_rgba(34,197,139,.5)]" />
+      {/* Main nav — compact, sticky, modern with subtle backdrop blur */}
+      <nav className="sticky top-0 z-30 bg-surface/80 backdrop-blur-md border-b border-line/60">
+        <div className="container-wide flex items-center gap-6 py-3.5 md:py-4">
+          <Link href="/" className="flex items-center gap-2 font-extrabold text-[1.1rem] tracking-tight shrink-0">
+            <span className="w-9 h-9 rounded-[10px] grid place-items-center text-white relative" style={{ background: "linear-gradient(135deg, var(--brand) 0%, var(--brand-ink) 100%)", color: "#fff" }}>
+              <Plus className="w-[18px] h-[18px]" strokeWidth={2.75} />
+              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-accent border-2 border-surface" />
             </span>
-            MED <em className="font-display italic font-medium text-brand text-[1.3rem] tracking-tight">CLINIC</em>
+            <span className="text-ink">MED</span>
+            <em className="font-display italic font-medium text-brand text-[1.2rem] tracking-tight -ml-0.5">CLINIC</em>
           </Link>
 
-          <div className="hidden lg:flex gap-1 ml-6">
+          <div className="hidden lg:flex items-center gap-1 ml-4 xl:ml-6">
             {navLinks.map((link) => {
               const active = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
               return (
-                <Link key={link.href} href={link.href} className={`relative px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${active ? "text-brand font-semibold bg-brand-soft/60" : "text-ink-soft hover:text-brand hover:bg-brand-soft/30"}`}>
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`nav-link relative px-2 xl:px-3 py-2 text-[13.5px] font-medium whitespace-nowrap transition-colors ${active ? "text-ink font-semibold" : "text-ink-soft hover:text-ink"}`}
+                >
                   {link.label}
+                  {active && <span className="absolute left-2 right-2 xl:left-3 xl:right-3 -bottom-[1px] h-0.5 bg-brand rounded-full" />}
                 </Link>
               );
             })}
           </div>
 
-          <div className="ml-auto flex gap-2 items-center">
+          <div className="ml-auto flex gap-2 items-center shrink-0">
             {user ? (
               <div ref={menuRef} className="relative hidden sm:block">
-                <button onClick={() => setMenuOpen((v) => !v)} className="flex items-center gap-2.5 pl-1 pr-3 py-1 bg-brand-soft/50 hover:bg-brand-soft border border-transparent hover:border-brand/20 rounded-full transition-colors">
-                  <span className="w-8 h-8 rounded-full text-white font-bold grid place-items-center text-[12px]" style={{ background: "linear-gradient(135deg, var(--brand), var(--brand-ink))", color: "#fff" }}>
-                    {(user.firstName?.[0] ?? user.phone[1] ?? "U").toUpperCase()}
-                    {(user.lastName?.[0] ?? "").toUpperCase()}
+                <button onClick={() => setMenuOpen((v) => !v)} className="flex items-center gap-2 pl-1 pr-2.5 py-1 bg-brand-soft/50 hover:bg-brand-soft border border-transparent hover:border-brand/20 rounded-full transition-colors max-w-[180px]">
+                  <span className="w-8 h-8 rounded-full text-white font-bold grid place-items-center text-[12px] shrink-0" style={{ background: "linear-gradient(135deg, var(--brand), var(--brand-ink))", color: "#fff" }}>
+                    {initialsFor(user)}
                   </span>
-                  <span className="text-[13px] font-semibold text-ink max-w-[120px] truncate">
-                    {user.role === "doctor" ? "Dr. " : ""}{user.firstName || user.phone.slice(0, 8)}
+                  <span className="hidden xl:inline text-[13px] font-semibold text-ink max-w-[100px] truncate">
+                    {displayName(user)}
                   </span>
-                  <ChevronDown className={`w-3.5 h-3.5 text-muted transition-transform ${menuOpen ? "rotate-180" : ""}`} />
+                  <ChevronDown className={`w-3.5 h-3.5 text-muted transition-transform shrink-0 ${menuOpen ? "rotate-180" : ""}`} />
                 </button>
                 {menuOpen && (
                   <div className="absolute right-0 top-full mt-2 w-60 bg-surface border border-line rounded-xl shadow-xl z-30 overflow-hidden">
@@ -139,13 +157,14 @@ export function Header() {
                 )}
               </div>
             ) : (
-              <Link href="/login" style={{ color: "var(--ink)" }} className="hidden sm:inline-block text-sm font-medium px-3.5 py-2 hover:text-brand transition-colors">Kirish</Link>
+              <Link href="/login" style={{ color: "var(--ink)" }} className="hidden sm:inline-block text-[13.5px] font-medium px-2.5 py-1.5 hover:text-brand transition-colors whitespace-nowrap">Kirish</Link>
             )}
-            <Link href="/booking" style={{ color: "#fff" }} className="bg-brand hover:bg-brand-ink !text-white px-4 h-10 rounded-[10px] text-sm font-semibold inline-flex items-center transition-colors">
-              Qabulga yozilish
+            <Link href="/booking" style={{ color: "#fff" }} className="bg-brand hover:bg-brand-ink !text-white px-3.5 xl:px-4 h-9 rounded-[9px] text-[13px] font-semibold inline-flex items-center gap-1 whitespace-nowrap transition-colors">
+              <span className="hidden sm:inline">Qabulga yozilish</span>
+              <span className="sm:hidden">Qabul</span>
             </Link>
-            <button onClick={() => setOpen(true)} className="lg:hidden w-10 h-10 rounded-[10px] bg-surface border border-line-strong text-ink grid place-items-center" aria-label="Menyu">
-              <Menu className="w-5 h-5" />
+            <button onClick={() => setOpen(true)} className="lg:hidden w-9 h-9 rounded-[9px] bg-surface border border-line text-ink grid place-items-center" aria-label="Menyu">
+              <Menu className="w-[18px] h-[18px]" />
             </button>
           </div>
         </div>

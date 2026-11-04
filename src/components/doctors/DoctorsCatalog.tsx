@@ -221,8 +221,8 @@ function CatalogInner() {
   );
 
   return (
-    <section className="py-6 lg:py-10 pb-16">
-      <div className="container-x grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 lg:gap-8 items-start">
+    <section className="pt-4 lg:pt-6 pb-20 lg:pb-28">
+      <div className="container-wide grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 lg:gap-12 items-start">
         {/* Mobile filter toggle */}
         <button onClick={() => setFiltersOpen((v) => !v)} className="lg:hidden flex items-center justify-between w-full px-4 py-3 bg-surface border border-line-strong rounded-xl font-semibold text-ink">
           <span className="inline-flex items-center gap-2"><Filter className="w-4 h-4 text-brand" />Filtrlar {activeFilterPills.length > 0 && <span className="bg-brand text-white rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ color: "#fff" }}>{activeFilterPills.length}</span>}</span>
@@ -263,7 +263,7 @@ function CatalogInner() {
 
           {/* Results grid */}
           {pageItems.length > 0 ? (
-            <MotionGrid key={`${query}-${specs.join()}-${city}-${sort}-${page}`} className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5">
+            <MotionGrid key={`${query}-${specs.join()}-${city}-${sort}-${page}`} className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5">
               {pageItems.map((doc) => (
                 <MotionItem key={doc.id} as="div">
                   <DoctorCard doc={doc} />
@@ -301,7 +301,7 @@ function CatalogInner() {
 
 export function DoctorsCatalog() {
   return (
-    <Suspense fallback={<div className="container-x py-12 text-center text-muted">Yuklanmoqda...</div>}>
+    <Suspense fallback={<div className="container-wide py-12 text-center text-muted">Yuklanmoqda...</div>}>
       <CatalogInner />
     </Suspense>
   );

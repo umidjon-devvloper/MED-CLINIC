@@ -1,9 +1,9 @@
 "use client";
 
-import { Heart, Share2, MessageCircle } from "lucide-react";
+import { Heart, Share2 } from "lucide-react";
 import { useFavorite, useToast } from "@/components/ui/Toast";
 
-export function DoctorActions({ docId, docName }: { docId: string; docName: string }) {
+export function DoctorActions({ docId, docName }: { docId: string; docName: string; docPhoto?: string }) {
   const [fav, toggle] = useFavorite("fav-doctors", docId);
   const toast = useToast();
 
@@ -27,10 +27,6 @@ export function DoctorActions({ docId, docName }: { docId: string; docName: stri
     }
   };
 
-  const onMessage = () => {
-    toast.show(`${docName}ga xabar yuborish — tez orada!`, "info");
-  };
-
   return (
     <div className="flex gap-2">
       <button
@@ -46,13 +42,6 @@ export function DoctorActions({ docId, docName }: { docId: string; docName: stri
         aria-label="Ulashish"
       >
         <Share2 className="w-[18px] h-[18px]" />
-      </button>
-      <button
-        onClick={onMessage}
-        className="flex-1 h-11 rounded-[11px] border border-line-strong bg-surface text-ink-soft grid place-items-center hover:text-brand hover:border-brand"
-        aria-label="Xabar"
-      >
-        <MessageCircle className="w-[18px] h-[18px]" />
       </button>
     </div>
   );

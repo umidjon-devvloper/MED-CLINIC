@@ -1,142 +1,208 @@
 # MED CLINIC — Professional Tibbiy Platforma
 
-Zamonaviy, premium va to'liq responsive tibbiy platforma. Bemorlar shifokorlarni tanlashi, onlayn qabulga yozilishi, tahlil natijalarini kuzatishi mumkin.
+Zamonaviy, premium va to'liq responsive tibbiy platforma. Bemorlar shifokorlarni tanlashi, onlayn qabulga yozilishi, tahlil natijalarini kuzatishi mumkin. Shifokorlar o'z kabinetida qabullar, bemorlar, retseptlar va daromadni boshqaradi.
+
+**Demo credentials:**
+- 👤 **Bemor** → `+998 90 123 45 67` / `bemor123`
+- 👨‍⚕️ **Shifokor** → `+998 90 555 00 00` / `shifokor123`
+
+---
 
 ## 🚀 Texnologiyalar
 
-- **Next.js 16** (App Router + Turbopack)
-- **TypeScript** — to'liq tiplar
-- **Tailwind CSS v4** — design tokens + custom utilities
-- **Framer Motion** — silliq animatsiyalar
-- **React Hook Form + Zod** — form validatsiya
-- **Lucide React** — toza ikonkalar
-- **Google Fonts**: Fraunces (display) + Manrope (sans)
+| Katta | Nima uchun |
+|---|---|
+| **Next.js 16** (App Router + Turbopack) | Server-side rendering, static prerender, 46+ marshrut |
+| **TypeScript** | 100% tip xavfsizligi, `any` ishlatilmagan |
+| **Tailwind CSS v4** | Design tokens + CSS variables |
+| **Framer Motion** | Silliq page transitions, scroll reveal, stagger, CountUp |
+| **React Hook Form + Zod** | Form validatsiya (login, register, booking, contact) |
+| **Lucide React** | Toza SVG ikonkalar |
+| **Google Fonts** | Fraunces (display italic) + Manrope (sans) |
+| **Google Maps JS API** | Klinikalar xaritasi — haqiqiy, OLX-stil marker'lar |
+
+---
+
+## 🛠 Ishga tushirish (5 daqiqa)
+
+### 1. Repo'ni klonlash
+
+```bash
+git clone https://github.com/<username>/med-clinic.git
+cd med-clinic
+```
+
+### 2. Dependency'larni o'rnatish
+
+```bash
+npm install
+```
+
+> Node.js **18.18+** yoki **20+** kerak. `npm`, `pnpm`, `yarn` — istalgani.
+
+### 3. Env faylini yaratish
+
+```bash
+cp .env.example .env.local
+```
+
+Yoki qo'lda yarating:
+
+```env
+# .env.local
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+# NEXT_PUBLIC_API_BASE=https://api.example.com   # backend ulanganda
+# NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=xxxxx
+# NEXT_PUBLIC_YANDEX_VERIFICATION=xxxxx
+```
+
+### 4. Dev serverni ishga tushirish
+
+```bash
+npm run dev
+```
+
+Brauzerda [http://localhost:3000](http://localhost:3000) ochiladi.
+
+### 5. Production build
+
+```bash
+npm run build    # 46+ sahifa prerender
+npm start        # production server
+```
+
+---
+
+## 📦 GitHub'ga joylash
+
+### Repo yaratish
+
+```bash
+# GitHub CLI bilan (tavsiya etiladi)
+gh repo create med-clinic --public --source=. --remote=origin --push
+
+# Yoki qo'lda:
+git init
+git add .
+git commit -m "feat: initial MED CLINIC platform"
+git branch -M main
+git remote add origin https://github.com/<username>/med-clinic.git
+git push -u origin main
+```
+
+### Vercel'ga deploy (tavsiya etiladi)
+
+```bash
+npm i -g vercel
+vercel          # birinchi marta, link qilish
+vercel --prod   # production
+```
+
+Yoki [vercel.com/new](https://vercel.com/new) — GitHub repo'ni import qiling. Env variables Vercel dashboard'dan qo'shiladi (`NEXT_PUBLIC_*`).
+
+### Boshqa hosting (Netlify, Hostinger VPS, DigitalOcean)
+
+Oddiy Next.js standalone build ishlaydi:
+
+```bash
+npm run build
+# .next/standalone va .next/static papkalari deploy qilinadi
+```
+
+Hostinger VPS uchun: `pm2 start npm --name "medclinic" -- start` + reverse proxy.
+
+---
 
 ## 📁 Loyiha strukturasi
 
 ```
 med-clinic/
 ├── src/
-│   ├── app/
-│   │   ├── layout.tsx                # Root layout (fontlar, Header, Footer)
-│   │   ├── page.tsx                  # Bosh sahifa
-│   │   ├── globals.css               # Design tokens, CSS variables
-│   │   ├── doctors/
-│   │   │   ├── page.tsx              # Shifokorlar katalogi
-│   │   │   └── [id]/page.tsx         # Shifokor profili
-│   │   ├── services/
-│   │   │   ├── page.tsx              # Xizmatlar katalogi
-│   │   │   └── [slug]/page.tsx       # Xizmat tafsiloti
-│   │   ├── clinics/page.tsx          # Klinikalar (xarita + ro'yxat)
-│   │   ├── blog/
-│   │   │   ├── page.tsx              # Blog ro'yxati
-│   │   │   └── [slug]/page.tsx       # Maqola
-│   │   ├── booking/page.tsx          # 6-qadamli qabul tizimi
-│   │   ├── dashboard/page.tsx        # Bemor shaxsiy kabineti
-│   │   ├── login/page.tsx
-│   │   ├── register/page.tsx
-│   │   ├── contact/page.tsx
-│   │   └── about/page.tsx
+│   ├── app/                            # Next.js App Router — 16 sahifa
+│   │   ├── layout.tsx                  # Root layout (fonts, Header, Footer, SEO metadata, JSON-LD)
+│   │   ├── page.tsx                    # Bosh sahifa (Hero + sectionlar)
+│   │   ├── globals.css                 # Design tokens, CSS variables, animatsiyalar
+│   │   ├── sitemap.ts                  # SEO sitemap.xml generator
+│   │   ├── robots.ts                   # SEO robots.txt generator
+│   │   ├── doctors/                    # Shifokorlar katalogi + [id] profil
+│   │   ├── services/                   # Xizmatlar katalogi + [slug] detail
+│   │   ├── clinics/                    # Klinikalar (Google Maps bilan)
+│   │   ├── blog/                       # Blog + [slug] maqola
+│   │   ├── booking/                    # 6-qadamli qabul tizimi (auth bilan)
+│   │   ├── dashboard/                  # Bemor kabineti — 8 section
+│   │   ├── doctor-dashboard/           # Shifokor kabineti — 7 section
+│   │   ├── login/ · register/          # Mock auth (role: bemor/shifokor)
+│   │   ├── contact/ · about/           # Statik sahifalar
 │   ├── components/
-│   │   ├── layout/                   # Header, Footer, MobileDrawer
-│   │   ├── home/                     # Hero + Section komponentlari
-│   │   ├── doctors/                  # DoctorCard, DoctorFilters
-│   │   ├── services/                 # ServiceCard, ServicesCatalog
-│   │   ├── clinics/                  # ClinicsMap
-│   │   └── blog/                     # ArticleCard
+│   │   ├── home/                       # Hero, ServicesSection, DoctorsSection, ...
+│   │   ├── doctors/                    # DoctorCard, DoctorsCatalog, DoctorTabs, MessageModal
+│   │   ├── services/                   # ServiceCard, ServicesCatalog
+│   │   ├── blog/                       # ArticleCard, BlogList
+│   │   ├── clinics/ClinicsMap.tsx      # Google Maps integration
+│   │   ├── layout/                     # Header, Footer, MobileDrawer
+│   │   ├── doctor-dashboard/           # Modal'lar + widgets + mock data
+│   │   └── ui/                         # Toast, AuthGate, CountUp, motion, ScrollReveal
 │   └── lib/
-│       ├── types.ts                  # Doctor, Service, Clinic, Article types
-│       └── data/                     # Mock data (doctors, services, clinics, articles)
-└── public/
-    └── images/                       # Doctor photos, blog thumbnails
+│       ├── data/                       # Mock data (doctors, services, clinics, articles)
+│       ├── api/                        # API layer stub (USE_MOCK bilan)
+│       ├── auth.ts                     # Mock auth helpers
+│       └── types.ts                    # TypeScript types
+├── public/images/                      # Shifokor, blog, xizmat rasmlari
+├── .env.local                          # Env variables (gitignore'da)
+└── package.json
 ```
 
-## 🛠 Ishga tushirish
+---
 
-```bash
-# Dependencies
-npm install
+## 🎨 Dizayn tizimi
 
-# Dev server (http://localhost:3000)
-npm run dev
+- **Palitra**: `--brand #1E6DD8` (ko'k), `--accent #22C58B` (yashil), `--ink #0A1F3A`, `--surface #FFF`
+- **Shrift**: Fraunces (display italic) + Manrope (sans)
+- **Container**: `.container-wide` (max-w-[1920px] + responsive paddings)
+- **Editorial pattern**: eyebrow label + katta Fraunces sarlavha + lead paragraph + CountUp stats
 
-# Production build
-npm run build
-npm start
+---
 
-# Lint
-npm run lint
-```
+## 🔐 Auth
 
-## 🎨 Design System
+Mock auth `localStorage` bilan ishlaydi (demo uchun). Haqiqiy backend ulash uchun:
 
-CSS variables `globals.css` da (Tailwind theme bilan integratsiyalashgan):
+1. `src/lib/auth.ts` — `tryLogin` va `registerAndLogin` funksiyalarini `api.post()` bilan almashtiring
+2. `src/lib/api/client.ts` — `NEXT_PUBLIC_API_BASE` env variable qo'ying
+3. `USE_MOCK` avtomatik `false` bo'ladi
 
-- **Ranglar**: `--bg #FBFCFD`, `--surface #FFFFFF`, `--ink #0A1F3A`, `--brand #1E6DD8`, `--brand-ink #0E3F8C`, `--accent #22C58B`, `--warn #E89C32`, `--danger #D64545`
-- **Fontlar**: `--font-display` (Fraunces, italic uchun), `--font-sans` (Manrope)
-- **Shadows**: `--shadow-sm`, `--shadow-md`, `--shadow-lg`
-- **Buttons**: `.btn`, `.btn-primary`, `.btn-outline`, `.btn-ghost`, `.btn-lg`, `.btn-sm`
+---
 
-## 📱 Responsive
+## 🌐 SEO
 
-- Desktop (1024+)
-- Tablet (640-1024)
-- Mobile (<640) — hamburger drawer menu, 2-ustun grid, sticky bottom CTA
+- `metadataBase` + per-page `generateMetadata`
+- OpenGraph + Twitter cards (`/og.png` kerak)
+- JSON-LD: `MedicalBusiness` root + `Physician` har bir shifokor profilida
+- `sitemap.xml` + `robots.txt` avto-generated (`/sitemap.xml`, `/robots.txt`)
+- `canonical` URL'lar
+- Multi-lang hreflang (uz-UZ, ru-RU, en-US)
 
-## 🔌 Backend integratsiyasi
+Google Search Console / Yandex Webmaster verification: env variable'ga tag'ni qo'ying (`NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`, `NEXT_PUBLIC_YANDEX_VERIFICATION`).
 
-Barcha ma'lumotlar `src/lib/data/` dagi mock fayllardan keladi. Backend API ga ulash uchun:
+---
 
-1. `src/lib/api/` papka yarating
-2. Har bir resurs uchun `fetcher` yozing (axios/fetch)
-3. Server Components-da `await fetch(...)` ishlating yoki `useSWR` client-componentlar uchun
-4. `src/lib/data/*.ts` ni dynamic import bilan almashtiring
+## 📱 Responsive breakpointlar
 
-Namuna:
-```ts
-// src/lib/api/doctors.ts
-export async function getDoctors() {
-  const res = await fetch(`${process.env.API_URL}/doctors`, { next: { revalidate: 60 } });
-  return res.json();
-}
-```
+- `sm`: 640px (telefon landscape)
+- `md`: 768px (tablet)
+- `lg`: 1024px (noutbuk)
+- `xl`: 1280px (desktop)
+- `2xl`: 1536px (ultra-wide)
 
-## 🔮 Kelajakdagi funksiyalar (TZ 13-bo'lim)
+Mobile-first — har bir komponent kichik ekrandan boshlab qurilgan.
 
-- [ ] Online to'lov (Click, Payme, Uzum)
-- [ ] SMS tasdiqlash (ESKIZ, Playmobile)
-- [ ] Telegram bildirishnomalar
-- [ ] AI shifokor tavsiyasi
-- [ ] Online video konsultatsiya
-- [ ] Elektron tibbiy karta
-- [ ] Ko'p tilli (UZ/RU/EN) — `next-intl` yoki `next-i18next`
+---
 
-## 📋 Sahifalar ro'yxati
+## 📝 Litsenziya
 
-| URL | Tavsif |
-|-----|--------|
-| `/` | Bosh sahifa — Hero + Xizmatlar + Shifokorlar + Qanday ishlaydi + Klinikalar + CTA |
-| `/doctors` | Shifokorlar katalogi (filtrlash, saralash, pagination) |
-| `/doctors/[id]` | Shifokor profili (bio, ta'lim, xizmatlar, sharhlar, booking sidebar) |
-| `/services` | Xizmatlar katalogi (filter + card grid) |
-| `/services/[slug]` | Xizmat tafsiloti (nimasi kiradi, tayyorlanish, bog'liq doktorlar) |
-| `/clinics` | Klinikalar (xarita + 6 filial kartasi) |
-| `/blog` | Blog (featured + category filter + 9 maqola) |
-| `/blog/[slug]` | Maqola |
-| `/booking` | 6-qadamli qabul tizimi |
-| `/dashboard` | Bemor kabineti (statistika, qabullar, tahlillar) |
-| `/login` + `/register` | Autentifikatsiya |
-| `/contact` | Aloqa (info + form + ijtimoiy tarmoqlar) |
-| `/about` | Biz haqimizda |
+MIT © 2026 MED CLINIC team
 
-## 🧪 Build
+---
 
-```bash
-npm run build
-```
-
-Natija: 46 ta statik sahifa (shifokor, xizmat, blog slug variantlari bilan).
-
-## 📄 Litsenziya
-
-Private © MED CLINIC 2026
+**Yordam yoki feedback?** → [info@medclinic.uz](mailto:info@medclinic.uz) · [@medclinic_uz](https://t.me/medclinic_uz)

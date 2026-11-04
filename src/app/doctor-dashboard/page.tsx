@@ -117,7 +117,6 @@ function DoctorDashboardShell() {
 
   return (
     <div className="min-h-screen bg-bg grid lg:grid-cols-[260px_1fr]">
-      {/* SIDEBAR */}
       <aside className="hidden lg:flex bg-surface border-r border-line flex-col sticky top-0 h-screen overflow-y-auto">
         <div className="p-6 border-b border-line">
           <Link href="/" className="flex items-center gap-2.5 font-extrabold text-lg">
@@ -151,9 +150,7 @@ function DoctorDashboardShell() {
         </div>
       </aside>
 
-      {/* MAIN */}
       <div className="flex flex-col min-h-screen">
-        {/* TOPBAR */}
         <header ref={topbarRef} className="bg-surface border-b border-line px-6 lg:px-8 py-4 flex items-center justify-between gap-4 sticky top-0 z-20">
           <form onSubmit={(e) => { e.preventDefault(); toast.show(`Natijalar: "${globalSearch}"`, "info"); }} className="relative flex-1 max-w-md">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
@@ -164,7 +161,6 @@ function DoctorDashboardShell() {
               {sidebar.map((s) => <option key={s.key} value={s.key}>{s.label}</option>)}
             </select>
 
-            {/* Notifications */}
             <div className="relative">
               <button onClick={() => { setNotifOpen((v) => !v); setMsgOpen(false); setUserOpen(false); }} className="relative w-10 h-10 rounded-xl bg-bg border border-line grid place-items-center text-ink-soft hover:text-brand hover:border-brand">
                 <Bell className="w-[18px] h-[18px]" />
@@ -188,7 +184,6 @@ function DoctorDashboardShell() {
               )}
             </div>
 
-            {/* Messages */}
             <div className="relative">
               <button onClick={() => { setMsgOpen((v) => !v); setNotifOpen(false); setUserOpen(false); }} className="relative w-10 h-10 rounded-xl bg-bg border border-line grid place-items-center text-ink-soft hover:text-brand hover:border-brand">
                 <MessageSquare className="w-[18px] h-[18px]" />
@@ -212,7 +207,6 @@ function DoctorDashboardShell() {
               )}
             </div>
 
-            {/* User menu */}
             <div className="relative">
               <button onClick={() => { setUserOpen((v) => !v); setNotifOpen(false); setMsgOpen(false); }} className="flex items-center gap-2.5 pl-3 border-l border-line">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#4D94F5] to-[#1E6DD8] text-white font-bold grid place-items-center text-sm" style={{ color: "#fff" }}>{settings.firstName[0]}{settings.lastName[0]}</div>
@@ -243,7 +237,6 @@ function DoctorDashboardShell() {
         </header>
 
         <main className="p-6 lg:p-8 flex flex-col gap-6">
-          {/* ============ OVERVIEW ============ */}
           {section === "overview" && (
             <MotionReveal>
               <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
@@ -354,7 +347,6 @@ function DoctorDashboardShell() {
             </MotionReveal>
           )}
 
-          {/* ============ SCHEDULE ============ */}
           {section === "schedule" && (
             <MotionReveal>
               <SectionHeader title="Mening" accent="jadvalim" subtitle="Hafta davomida belgilangan qabullar — bo'sh katakka bosib vaqt qo'shing" />
@@ -393,7 +385,6 @@ function DoctorDashboardShell() {
             </MotionReveal>
           )}
 
-          {/* ============ PATIENTS ============ */}
           {section === "patients" && (
             <MotionReveal>
               <SectionHeader title="Mening" accent="bemorlarim" subtitle={`Jami ${patients.length} ta faol bemor · So'nggi tashriflar bo'yicha tartiblandi`} />
@@ -439,7 +430,6 @@ function DoctorDashboardShell() {
             </MotionReveal>
           )}
 
-          {/* ============ RECORDS ============ */}
           {section === "records" && (
             <MotionReveal>
               <SectionHeader title="Tahlillar va" accent="retseptlar" subtitle="Yuborilgan va kutilayotgan tibbiy hujjatlar" />
@@ -480,7 +470,6 @@ function DoctorDashboardShell() {
             </MotionReveal>
           )}
 
-          {/* ============ REVIEWS ============ */}
           {section === "reviews" && (
             <MotionReveal>
               <SectionHeader title="Bemor" accent="sharhlari" subtitle={`O'rtacha: 4.9 ★ · ${reviews.length * 100 + 12} ta sharh`} />
@@ -539,7 +528,6 @@ function DoctorDashboardShell() {
             </MotionReveal>
           )}
 
-          {/* ============ REVENUE ============ */}
           {section === "revenue" && (
             <MotionReveal>
               <SectionHeader title="Mening" accent="daromadim" subtitle="Noyabr oyi · 14.2 million so'm · +18% o'tgan oyga nisbatan" />
@@ -599,7 +587,6 @@ function DoctorDashboardShell() {
             </MotionReveal>
           )}
 
-          {/* ============ SETTINGS ============ */}
           {section === "settings" && (
             <MotionReveal>
               <SectionHeader title="Shifokor" accent="sozlamalari" subtitle="Bu yerda kiritgan ma'lumotlaringiz ommaviy profilingizda ko'rinadi" />
@@ -717,7 +704,6 @@ function DoctorDashboardShell() {
         </main>
       </div>
 
-      {/* ===== MODALS ===== */}
       {newApptOpen && <NewApptModal onClose={() => setNewApptOpen(false)} onCreate={(a) => { setAppts((prev) => [...prev, { ...a, id: `n${Date.now()}`, bg: palette[prev.length % palette.length] }]); setNewApptOpen(false); toast.show(`${a.patient} · ${a.time} ga qabul qo'shildi`, "success"); }} />}
       {activeAppt && <ConsultationModal appt={activeAppt} onClose={() => setActiveAppt(null)} onEnd={endActiveAppt} />}
       {scheduleEdit && <ScheduleEditModal entry={schedule[scheduleEdit.key]} day={scheduleEdit.day} time={scheduleEdit.time} onClose={() => setScheduleEdit(null)} onSave={(v) => { setSchedule((s) => ({ ...s, [scheduleEdit.key]: v })); setScheduleEdit(null); toast.show("Jadval yangilandi", "success"); }} onRemove={() => { setSchedule((s) => { const n = { ...s }; delete n[scheduleEdit.key]; return n; }); setScheduleEdit(null); toast.show("Vaqt bo'shatildi", "success"); }} />}

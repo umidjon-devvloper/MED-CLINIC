@@ -7,7 +7,6 @@ import { getUser, DEMO_PATIENT } from "@/lib/auth";
 
 type Props = {
   children: ReactNode;
-  /** Where to send the user back after they log in. Defaults to current pathname. */
   redirectTo?: string;
   title?: string;
   message?: string;

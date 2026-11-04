@@ -1,8 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Home, ChevronRight, Heart, ArrowRight } from "lucide-react";
+import { ChevronRight, Heart, ArrowUpRight, Newspaper, Users, BookOpen } from "lucide-react";
 import { articles } from "@/lib/data/articles";
 import { BlogList } from "@/components/blog/BlogList";
+import { CountUp } from "@/components/ui/CountUp";
 
 export const metadata: Metadata = {
   title: "Blog va yangiliklar — MED CLINIC",
@@ -14,151 +15,110 @@ export default function BlogPage() {
 
   return (
     <>
-      {/* PAGE HEAD */}
-      <section className="relative overflow-hidden" style={{ padding: "2.5rem 0 2rem", background: "linear-gradient(180deg, #F7FAFF 0%, #EDF4FD 100%)", borderBottom: "1px solid var(--line)" }}>
-        <div
-          aria-hidden
-          className="absolute pointer-events-none"
-          style={{
-            top: "-30%", right: "5%", width: 520, height: 520,
-            background: "radial-gradient(circle, rgba(77,148,245,0.3), transparent 65%)",
-            filter: "blur(55px)", zIndex: 0,
-          }}
-        />
-        <div
-          aria-hidden
-          className="absolute pointer-events-none"
-          style={{
-            bottom: "-50%", left: "-5%", width: 400, height: 400,
-            background: "radial-gradient(circle, rgba(34,197,139,0.12), transparent 65%)",
-            filter: "blur(50px)", zIndex: 0,
-          }}
-        />
-        <div className="container-x relative z-10 grid lg:grid-cols-[1.1fr_1fr] gap-8 items-center" style={{ minHeight: 240 }}>
-          <div className="max-w-[580px]">
-            <span className="inline-flex items-center gap-2 bg-white shadow-sm text-muted text-[13px] mb-4 self-start px-3 py-1.5 rounded-full">
-              <Link href="/" className="inline-flex items-center gap-1.5 hover:text-brand transition-colors">
-                <Home className="w-3.5 h-3.5" /> Bosh sahifa
-              </Link>
-              <ChevronRight className="w-2.5 h-2.5" />
-              <span className="text-ink font-medium">Blog</span>
-            </span>
-            <h1 className="font-display font-medium text-ink leading-[1.05]" style={{ fontSize: "clamp(32px, 5vw, 48px)", letterSpacing: "-0.025em" }}>
-              Tibbiy blog va <em className="italic text-brand font-normal">yangiliklar</em>
-            </h1>
-            <p className="text-ink-soft leading-[1.55] max-w-[48ch] mt-4" style={{ fontSize: 15 }}>
-              Sizning salomatligingiz, profilaktika, zamonaviy davolash usullari va foydali maslahatlar — bir haftada eng muhim tibbiy mavzular.
-            </p>
+      <section className="relative overflow-hidden pt-16 md:pt-20 pb-16 md:pb-20" style={{ background: "linear-gradient(180deg, #F5F8FD 0%, #EEF3FB 60%, var(--bg) 100%)" }}>
+        <div className="absolute top-[15%] right-[8%] w-[480px] h-[480px] rounded-full blur-[80px] opacity-30 pointer-events-none" style={{ background: "radial-gradient(closest-side, rgba(77,148,245,0.35), transparent 70%)" }} />
+
+        <div className="container-wide relative">
+          <div className="flex items-center gap-2 text-[12.5px] text-muted mb-8">
+            <Link href="/" className="hover:text-brand">Bosh sahifa</Link>
+            <ChevronRight className="w-3 h-3" />
+            <span className="text-ink font-medium">Blog</span>
           </div>
-          {/* 3D Stethoscope illustration */}
-          <div className="relative hidden lg:block justify-self-end w-full anim-float-slow" style={{ maxWidth: 420 }} aria-hidden>
-            <div className="relative">
-              {/* soft radial glow behind */}
-              <div
-                className="absolute inset-[-20%] pointer-events-none"
-                style={{
-                  background: "radial-gradient(circle at center, rgba(77,148,245,0.25), transparent 65%)",
-                  filter: "blur(40px)", borderRadius: "50%",
-                }}
-              />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/hero/stethoscope.webp"
-                alt=""
-                className="relative w-full h-auto"
-                style={{
-                  filter: "drop-shadow(0 30px 50px rgba(14,63,140,0.3))",
-                  mixBlendMode: "multiply",
-                  WebkitMaskImage: "radial-gradient(ellipse 70% 70% at center, #000 30%, rgba(0,0,0,0.9) 50%, rgba(0,0,0,0.5) 70%, transparent 95%)",
-                  maskImage: "radial-gradient(ellipse 70% 70% at center, #000 30%, rgba(0,0,0,0.9) 50%, rgba(0,0,0,0.5) 70%, transparent 95%)",
-                }}
-              />
+
+          <div className="grid lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 items-end">
+            <div className="max-w-[820px]">
+              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand mb-5 inline-flex items-center gap-2.5">
+                <span className="w-8 h-px bg-brand" />
+                Jurnal · 2026
+              </div>
+              <h1 className="font-display font-normal text-ink leading-[0.98] tracking-[-0.025em]" style={{ fontSize: "clamp(42px, 7vw, 84px)" }}>
+                Tibbiy <em className="italic text-brand">jurnal</em>.
+              </h1>
+              <p className="text-[15px] md:text-[17px] text-ink-soft mt-6 max-w-[56ch] leading-relaxed">
+                Salomatlik, profilaktika, zamonaviy davolash usullari va foydali maslahatlar.
+                Shifokorlarimiz haftada 3-4 marta yangi maqola nashr etadi.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-3 lg:flex lg:flex-col gap-6 lg:gap-5 lg:min-w-[220px] lg:border-l lg:border-line lg:pl-10">
+              {[
+                { icon: Newspaper, num: 180, suffix: "+", l: "Maqola" },
+                { icon: Users,     num: 24,  suffix: "",  l: "Muallif" },
+                { icon: BookOpen,  num: 9,   suffix: "",  l: "Rubrika" },
+              ].map((c, i) => (
+                <div key={i} className="flex flex-col gap-1">
+                  <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-muted font-bold">
+                    <c.icon className="w-3.5 h-3.5 text-brand" />
+                    {c.l}
+                  </div>
+                  <div className="font-display font-medium text-ink tabular-nums leading-none tracking-tight inline-flex items-baseline" style={{ fontSize: "clamp(28px, 3vw, 38px)" }}>
+                    <CountUp to={c.num} />
+                    <em className="italic text-brand text-[0.65em] font-normal not-italic">{c.suffix}</em>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* FEATURED HERO */}
-      <section className="pt-8 pb-2">
-        <div className="container-x">
-          <div
-            className="relative rounded-[28px] overflow-hidden shadow-[var(--shadow-lg)] grid lg:grid-cols-[1.05fr_1.1fr] items-center"
-            style={{ background: "linear-gradient(135deg, #DCECFC 0%, #BFDAF6 100%)", minHeight: 340 }}
-          >
-            <div
-              aria-hidden
-              className="absolute pointer-events-none"
-              style={{
-                top: 0, right: 0, width: "60%", height: "100%",
-                background: "radial-gradient(circle at 30% 50%, rgba(255,255,255,0.4), transparent 70%)",
-              }}
-            />
-            {/* 3D Heart illustration */}
-            <div className="relative p-6 md:p-8 flex items-center justify-center z-10" aria-hidden>
-              <div className="relative w-full max-w-[380px]">
-                <div
-                  className="absolute inset-[5%] pointer-events-none"
-                  style={{
-                    background: "radial-gradient(circle, rgba(255,255,255,0.6), transparent 70%)",
-                    filter: "blur(35px)", borderRadius: "50%",
-                  }}
-                />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/hero/heart-3d.webp"
-                  alt=""
-                  className="relative w-full h-auto"
-                  style={{
-                    filter: "drop-shadow(0 25px 50px rgba(190,30,30,0.25))",
-                    mixBlendMode: "multiply",
-                    WebkitMaskImage: "radial-gradient(ellipse 75% 72% at center, #000 20%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.5) 65%, transparent 90%)",
-                    maskImage: "radial-gradient(ellipse 75% 72% at center, #000 20%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.5) 65%, transparent 90%)",
-                  }}
-                />
+      <section className="pt-6 pb-10 md:pb-14">
+        <div className="container-wide">
+          <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand mb-5 inline-flex items-center gap-2.5">
+            <Heart className="w-3 h-3 fill-current" />
+            Tavsiya etilgan
+          </div>
+
+          <Link href={`/blog/${featured.slug}`} className="group block">
+            <div className="grid lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-14 items-center">
+              <div className="relative aspect-[5/4] md:aspect-[5/3.6] rounded-[24px] overflow-hidden" style={{ background: "linear-gradient(135deg, #DCECFC 0%, #BFDAF6 100%)" }}>
+                <div className="absolute inset-0" style={{ background: "radial-gradient(circle at 30% 50%, rgba(255,255,255,0.5), transparent 70%)" }} />
+                <div className="absolute inset-0 flex items-center justify-center p-8">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/hero/heart-3d.webp"
+                    alt=""
+                    className="relative w-full h-auto max-w-[420px] transition-transform duration-700 group-hover:scale-105"
+                    style={{
+                      filter: "drop-shadow(0 25px 50px rgba(190,30,30,0.3))",
+                      mixBlendMode: "multiply",
+                      WebkitMaskImage: "radial-gradient(ellipse 75% 72% at center, #000 20%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.5) 65%, transparent 90%)",
+                      maskImage: "radial-gradient(ellipse 75% 72% at center, #000 20%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.5) 65%, transparent 90%)",
+                    }}
+                  />
+                </div>
+                <div className="absolute top-5 left-5">
+                  <span className="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur text-[#D64545] text-[10.5px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D64545]" />
+                    Kardiologiya
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className="relative p-8 lg:py-10 lg:pr-12 lg:pl-4 z-10">
-              <span
-                className="inline-flex items-center gap-2 bg-white text-brand font-bold uppercase mb-4 shadow-[0_2px_8px_rgba(10,31,58,0.06)] rounded-full"
-                style={{ fontSize: 12, letterSpacing: "0.08em", padding: "6px 14px" }}
-              >
-                <Heart className="w-[13px] h-[13px] fill-[#D64545] text-[#D64545]" />
-                Tavsiya etilgan
-              </span>
-              <h2 className="font-display font-medium text-ink mb-4 leading-[1.15]" style={{ fontSize: "clamp(22px, 3vw, 34px)", letterSpacing: "-0.02em" }}>
-                Yurak kasalliklarini <em className="italic text-brand">oldini olish</em>: har kuni bajarsa bo&apos;ladigan 7 ta oddiy odat
-              </h2>
-              <p className="text-[14.5px] leading-[1.55] text-ink-soft max-w-[48ch] mb-6">
-                Kardiologlar yurak salomatligini saqlash va kasalliklar xavfini kamaytirish uchun har kuni bajarishingiz mumkin bo&apos;lgan 7 ta oddiy, ammo samarali odatni tavsiya qiladi.
-              </p>
-              <div className="flex items-center justify-between gap-4 flex-wrap">
-                <div className="flex items-center gap-3">
-                  <div className="w-[42px] h-[42px] rounded-full overflow-hidden shrink-0" style={{ background: "linear-gradient(165deg, #D7E8FA, #B5D4F2)" }}>
+
+              <div>
+                <h2 className="font-display font-normal text-ink leading-[1.02] tracking-[-0.02em]" style={{ fontSize: "clamp(28px, 3.5vw, 48px)" }}>
+                  Yurak kasalliklarini <em className="italic text-brand">oldini olish</em>: 7 ta oddiy odat.
+                </h2>
+                <p className="text-[15px] md:text-[17px] text-ink-soft mt-5 leading-relaxed max-w-[56ch]">
+                  Kardiologlar yurak salomatligini saqlash va kasalliklar xavfini kamaytirish uchun har kuni bajarishingiz mumkin bo&apos;lgan oddiy, ammo samarali odatlarni tavsiya qiladi.
+                </p>
+                <div className="flex items-center gap-4 mt-7 pt-7 border-t border-line">
+                  <div className="w-11 h-11 rounded-full overflow-hidden shrink-0" style={{ background: "linear-gradient(165deg, #D7E8FA, #B5D4F2)" }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={featured.author.avatar} alt={featured.author.name} className="w-full h-full object-cover" />
                   </div>
-                  <div>
-                    <div className="font-bold text-[13.5px] text-ink">Dr. Alisher Qodirov · Kardiolog</div>
-                    <div className="text-[11.5px] text-muted mt-0.5">14 noyabr, 2026 · 6 daqiqa o&apos;qish</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-bold text-[13.5px] text-ink">Dr. Alisher Qodirov</div>
+                    <div className="text-[12px] text-muted">Kardiolog · 14 noyabr, 2026 · 6 daq o&apos;qish</div>
                   </div>
+                  <span className="inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-brand group-hover:gap-2.5 transition-all">
+                    O&apos;qish
+                    <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
+                  </span>
                 </div>
-                <Link
-                  href={`/blog/${featured.slug}`}
-                  aria-label="Davomini o'qish"
-                  className="w-12 h-12 rounded-full grid place-items-center !text-white shrink-0 shadow-[0_8px_20px_rgba(30,109,216,.35)] hover:translate-x-1 transition-transform"
-                  style={{ background: "linear-gradient(135deg, var(--brand), var(--brand-ink))", color: "#fff" }}
-                >
-                  <ArrowRight className="w-[18px] h-[18px]" strokeWidth={2.5} />
-                </Link>
               </div>
             </div>
-          </div>
-          {/* dots */}
-          <div className="flex justify-center gap-1.5 mt-4">
-            <span className="rounded-sm" style={{ width: 32, height: 4, background: "var(--brand)" }} />
-            <span className="rounded-sm" style={{ width: 24, height: 4, background: "var(--line-strong)" }} />
-            <span className="rounded-sm" style={{ width: 24, height: 4, background: "var(--line-strong)" }} />
-          </div>
+          </Link>
         </div>
       </section>
 

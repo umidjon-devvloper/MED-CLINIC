@@ -6,7 +6,6 @@ import type { ReactNode } from "react";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
 
-/** Full-page transition — fades + slides each route in */
 export function PageTransition({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   return (
@@ -24,7 +23,6 @@ export function PageTransition({ children }: { children: ReactNode }) {
   );
 }
 
-/** Container that staggers its direct children (use with MotionItem) */
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   show: {
@@ -58,7 +56,6 @@ export function MotionItem({ children, className, as = "div" }: { children: Reac
   return <C className={className} variants={itemVariants}>{children}</C>;
 }
 
-/** Fade-slide a single element in view — standalone, no container */
 export function MotionReveal({
   children, className, delay = 0, y = 24, as = "div",
 }: { children: ReactNode; className?: string; delay?: number; y?: number; as?: "div" | "section" | "article" | "aside" | "header" }) {

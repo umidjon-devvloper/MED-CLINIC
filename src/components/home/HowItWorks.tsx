@@ -7,28 +7,28 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="scroll-reveal py-16 md:py-20 bg-surface border-y border-line">
-      <div className="container-x">
-        <div className="mb-10 md:mb-12">
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-soft text-brand text-xs font-semibold uppercase tracking-wider rounded-full">
-            <span className="w-1.5 h-1.5 rounded-full bg-brand" />
+    <section className="scroll-reveal py-20 md:py-28 bg-surface border-y border-line">
+      <div className="container-wide">
+        <div className="mb-12 md:mb-16 max-w-[640px]">
+          <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand mb-5 inline-flex items-center gap-2.5">
+            <span className="w-8 h-px bg-brand" />
             Jarayon
-          </span>
-          <h2 className="font-display font-normal text-2xl md:text-[46px] mt-4 tracking-tight text-ink">
-            Qanday <em className="italic text-brand">ishlaydi</em>
+          </div>
+          <h2 className="font-display font-normal text-ink leading-[0.98] tracking-[-0.025em]" style={{ fontSize: "clamp(36px, 5.5vw, 68px)" }}>
+            Qanday <em className="italic text-brand">ishlaydi</em>.
           </h2>
-          <p className="text-sm md:text-base text-ink-soft mt-3 max-w-[44ch]">
+          <p className="text-[15px] md:text-[17px] text-ink-soft mt-5 max-w-[48ch] leading-relaxed">
             To&apos;rt oddiy qadam — va siz shifokor qabulidasiz.
           </p>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-line rounded-2xl overflow-hidden border border-line">
           {steps.map((step) => (
-            <div key={step.num} className="bg-bg border border-line rounded-2xl p-5 md:p-7 flex flex-col gap-2">
-              <div className="font-display italic font-normal text-brand text-4xl md:text-5xl leading-none tracking-tight tabular-nums">
+            <div key={step.num} className="bg-surface p-7 md:p-10 flex flex-col gap-3 hover:bg-bg transition-colors">
+              <div className="font-display italic font-normal text-brand text-[56px] md:text-[80px] leading-none tracking-[-0.03em] tabular-nums">
                 {step.num}
               </div>
-              <h3 className="text-sm md:text-[17px] font-semibold text-ink mt-2">{step.title}</h3>
-              <p className="text-xs md:text-[13.5px] text-ink-soft leading-relaxed">{step.desc}</p>
+              <h3 className="text-base md:text-[19px] font-bold text-ink mt-4 tracking-tight">{step.title}</h3>
+              <p className="text-[13px] md:text-[14.5px] text-ink-soft leading-relaxed">{step.desc}</p>
             </div>
           ))}
         </div>

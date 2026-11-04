@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Layers, Microscope, Clock3 } from "lucide-react";
 import { ServicesCatalog } from "@/components/services/ServicesCatalog";
+import { CountUp } from "@/components/ui/CountUp";
 
 export const metadata = {
   title: "Tibbiy xizmatlar — MED CLINIC",
@@ -10,59 +11,58 @@ export const metadata = {
 export default function ServicesPage() {
   return (
     <>
-      <section className="py-8 md:py-10 bg-surface border-b border-line">
-        <div className="container-x">
-          <div className="flex items-center gap-2 text-[13px] text-muted mb-3">
+      {/* PAGE HEAD — editorial, matches /doctors style */}
+      <section className="relative overflow-hidden pt-16 md:pt-20 pb-16 md:pb-20" style={{ background: "linear-gradient(180deg, #F5F8FD 0%, #EEF3FB 60%, var(--bg) 100%)" }}>
+        <div className="absolute top-[15%] right-[8%] w-[480px] h-[480px] rounded-full blur-[80px] opacity-30 pointer-events-none" style={{ background: "radial-gradient(closest-side, rgba(77,148,245,0.35), transparent 70%)" }} />
+
+        <div className="container-wide relative">
+          <div className="flex items-center gap-2 text-[12.5px] text-muted mb-8">
             <Link href="/" className="hover:text-brand">Bosh sahifa</Link>
             <ChevronRight className="w-3 h-3" />
             <span className="text-ink font-medium">Xizmatlar</span>
           </div>
-          <div className="flex items-end justify-between gap-6 flex-wrap">
-            <div>
-              <h1 className="font-display font-normal text-3xl md:text-[48px] tracking-tight leading-tight text-ink">
-                Tibbiy <em className="italic text-brand">xizmatlar</em>
+
+          <div className="grid lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 items-end">
+            <div className="max-w-[820px]">
+              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand mb-5 inline-flex items-center gap-2.5">
+                <span className="w-8 h-px bg-brand" />
+                Tibbiy katalog · 2026
+              </div>
+              <h1 className="font-display font-normal text-ink leading-[0.98] tracking-[-0.025em]" style={{ fontSize: "clamp(42px, 7vw, 84px)" }}>
+                Kerakli <em className="italic text-brand">xizmatni</em> toping.
               </h1>
-              <p className="text-sm text-muted mt-2">
-                Topildi: <b className="text-ink font-semibold tabular-nums">60+ xizmat</b> · 12 ta toifada
+              <p className="text-[15px] md:text-[17px] text-ink-soft mt-6 max-w-[56ch] leading-relaxed">
+                60+ tibbiy xizmat, 12 yo&apos;nalish. Kardiologiyadan laboratoriya tahlillari va MRT'gacha —
+                har bir xizmat professional shifokorlar nazoratida.
               </p>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="text-[13px] text-muted">Saralash:</span>
-              <select className="font-medium text-[13.5px] text-ink bg-surface border border-line-strong rounded-[10px] px-4 py-2.5 cursor-pointer outline-none appearance-none pr-9" style={{ backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234A6684' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>\")", backgroundRepeat: "no-repeat", backgroundPosition: "right 0.75rem center" }}>
-                <option>Mashhurligi bo&apos;yicha</option>
-                <option>Narx bo&apos;yicha (arzondan)</option>
-                <option>Narx bo&apos;yicha (qimmatdan)</option>
-                <option>Alifbo bo&apos;yicha</option>
-              </select>
+
+            <div className="grid grid-cols-3 lg:flex lg:flex-col gap-6 lg:gap-5 lg:min-w-[220px] lg:border-l lg:border-line lg:pl-10">
+              {[
+                { icon: Layers,     num: 60, suffix: "+", l: "Xizmat" },
+                { icon: Microscope, num: 12, suffix: "",  l: "Yo'nalish" },
+                { icon: Clock3,     num: 24, suffix: "h", l: "Natija" },
+              ].map((c, i) => (
+                <div key={i} className="flex flex-col gap-1">
+                  <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-muted font-bold">
+                    <c.icon className="w-3.5 h-3.5 text-brand" />
+                    {c.l}
+                  </div>
+                  <div className="font-display font-medium text-ink tabular-nums leading-none tracking-tight inline-flex items-baseline" style={{ fontSize: "clamp(28px, 3vw, 38px)" }}>
+                    <CountUp to={c.num} />
+                    <em className="italic text-brand text-[0.65em] font-normal not-italic">{c.suffix}</em>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-8 md:py-10">
-        <div className="container-x">
+      {/* Catalog */}
+      <section className="pt-4 lg:pt-6 pb-20 lg:pb-28">
+        <div className="container-wide">
           <ServicesCatalog />
-        </div>
-      </section>
-
-      <section className="pb-16 md:pb-20">
-        <div className="container-x">
-          <div className="rounded-3xl p-8 md:p-14 text-white relative overflow-hidden grid md:grid-cols-[1.3fr_auto] gap-6 items-center" style={{ background: "linear-gradient(135deg, var(--brand-ink) 0%, var(--brand) 100%)" }}>
-            <div className="absolute bottom-[-100px] right-[-100px] w-[400px] h-[400px] rounded-full" style={{ background: "radial-gradient(closest-side, rgba(255,255,255,.1), transparent 70%)" }} />
-            <div className="relative z-10">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/15 text-[#BBD1EC] text-xs font-semibold uppercase tracking-wider rounded-full mb-4">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#35D59B]" />
-                Online qabul
-              </span>
-              <h2 className="font-display font-normal text-2xl md:text-4xl mb-3 tracking-tight leading-tight">
-                Qulay xizmatni <em className="italic text-[#BBD1EC]">tanlang</em> va darhol yoziling
-              </h2>
-              <p className="text-sm md:text-base opacity-90 max-w-[55ch]">
-                Narx va vaqtni oldindan ko&apos;ring, kutish navbatini yo&apos;qoting.
-              </p>
-            </div>
-            <Link href="/booking" className="btn btn-lg bg-white text-brand-ink hover:bg-[#F0F6FF] border-white relative z-10">Qabulga yozilish</Link>
-          </div>
         </div>
       </section>
     </>

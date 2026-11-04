@@ -11,7 +11,6 @@ export type User = {
 
 const STORAGE_KEY = "med-user";
 
-/** Demo credentials — any user can log in with these to try the platform */
 export const DEMO_PATIENT = {
   phone: "+998 90 123 45 67",
   password: "bemor123",
@@ -29,7 +28,6 @@ export const DEMO_DOCTOR = {
 
 const normalizePhone = (p: string) => p.replace(/\s+/g, "").trim();
 
-/** Returns the current user, or null if not logged in. SSR-safe. */
 export function getUser(): User | null {
   if (typeof window === "undefined") return null;
   try {
@@ -52,8 +50,6 @@ export function logout(): void {
   try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
 }
 
-/** Mock login — accepts the two demo accounts, OR any phone that looks valid + password ≥ 6 chars.
- *  Returns the signed-in user, or null if the credentials don't pass validation. */
 export function tryLogin(phone: string, password: string, requestedRole: UserRole): User | null {
   const p = normalizePhone(phone);
   const demoP = normalizePhone(DEMO_PATIENT.phone);

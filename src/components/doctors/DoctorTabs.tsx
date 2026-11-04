@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { User, GraduationCap, Stethoscope, Star, Calendar } from "lucide-react";
 
 const tabs = [
-  { id: "about", label: "Haqida" },
-  { id: "education", label: "Ta'lim va tajriba" },
-  { id: "services", label: "Xizmatlar" },
-  { id: "reviews", label: "Sharhlar" },
-  { id: "schedule", label: "Jadval" },
+  { id: "about",     label: "Haqida",            icon: User },
+  { id: "education", label: "Ta'lim va tajriba", icon: GraduationCap },
+  { id: "services",  label: "Xizmatlar",         icon: Stethoscope },
+  { id: "reviews",   label: "Sharhlar",          icon: Star },
+  { id: "schedule",  label: "Jadval",            icon: Calendar },
 ];
 
 export function DoctorTabs({ reviewCount }: { reviewCount: number }) {
@@ -39,20 +40,22 @@ export function DoctorTabs({ reviewCount }: { reviewCount: number }) {
 
   return (
     <div className="bg-surface border-b border-line sticky top-0 z-10 shadow-sm">
-      <div className="container-x">
-        <div className="flex gap-6 md:gap-8 overflow-x-auto scrollbar-hide">
+      <div className="container-wide">
+        <div className="flex gap-5 md:gap-7 overflow-x-auto scrollbar-hide justify-end">
           {tabs.map((t) => {
             const isActive = active === t.id;
             const label = t.id === "reviews" ? `${t.label} (${reviewCount})` : t.label;
+            const Icon = t.icon;
             return (
               <a
                 key={t.id}
                 href={`#${t.id}`}
                 onClick={onClick(t.id)}
-                className={`py-5 text-[14.5px] whitespace-nowrap relative transition-colors ${isActive ? "text-ink font-semibold" : "text-ink-soft font-medium hover:text-brand"}`}
+                className={`py-5 text-[14px] md:text-[14.5px] whitespace-nowrap relative inline-flex items-center gap-2 transition-colors ${isActive ? "text-brand font-semibold" : "text-ink-soft font-medium hover:text-brand"}`}
               >
+                <Icon className={`w-[16px] h-[16px] ${isActive ? "text-brand" : "text-muted"}`} />
                 {label}
-                {isActive && <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-brand" />}
+                {isActive && <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-brand rounded-full" />}
               </a>
             );
           })}

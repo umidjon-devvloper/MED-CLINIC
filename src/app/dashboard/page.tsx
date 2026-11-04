@@ -122,7 +122,6 @@ function DashboardShell() {
 
   return (
     <div className="min-h-screen bg-bg">
-      {/* NAV */}
       <nav className="bg-surface border-b border-line shadow-[0_2px_12px_rgba(10,31,58,0.04)]">
         <div className="container-x flex items-center gap-4 py-6 md:py-7">
           <Link href="/" className="flex items-center gap-2.5 font-extrabold text-[1.15rem] tracking-wide">
@@ -156,7 +155,6 @@ function DashboardShell() {
       <section className="py-8 md:py-10">
         <div className="container-x grid lg:grid-cols-[240px_1fr] gap-6">
 
-          {/* SIDEBAR */}
           <aside className="bg-surface border border-line rounded-2xl p-4 lg:p-6 lg:sticky lg:top-4 self-start flex flex-col gap-3">
             <div className="flex lg:flex-col items-center gap-3 lg:gap-1.5 pb-4 border-b border-line text-center">
               <div className="w-10 h-10 lg:w-[68px] lg:h-[68px] rounded-full grid place-items-center text-white font-bold text-sm lg:text-2xl shrink-0" style={{ background: "linear-gradient(135deg, var(--brand-soft), var(--brand))", color: "#fff" }}>{profile.firstName[0]}{profile.lastName[0]}</div>
@@ -186,10 +184,8 @@ function DashboardShell() {
             </nav>
           </aside>
 
-          {/* MAIN */}
           <div className="flex flex-col gap-5">
 
-            {/* ===== OVERVIEW ===== */}
             {section === "overview" && (
               <>
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3">
@@ -315,7 +311,6 @@ function DashboardShell() {
               </>
             )}
 
-            {/* ===== APPOINTMENTS ===== */}
             {section === "appointments" && (
               <div className="flex flex-col gap-5">
                 <PageHead title="Mening" accent="qabullarim" subtitle={`Jami ${appts.length} ta qabul · 1 ta kutilayotgan, ${appts.filter((a) => a.status === "done").length} ta yakunlangan`} action={<Link href="/booking" className="btn btn-primary"><Plus className="w-4 h-4" />Yangi qabul</Link>} />
@@ -341,7 +336,6 @@ function DashboardShell() {
               </div>
             )}
 
-            {/* ===== RESULTS ===== */}
             {section === "results" && (
               <div className="flex flex-col gap-5">
                 <PageHead title="Tahlil" accent="natijalari" subtitle="Barcha tahlil natijalari bir joyda — yuklab olish mumkin" />
@@ -361,7 +355,6 @@ function DashboardShell() {
               </div>
             )}
 
-            {/* ===== DOCUMENTS ===== */}
             {section === "documents" && (
               <div className="flex flex-col gap-5">
                 <PageHead title="Tibbiy" accent="hujjatlar" subtitle="Tibbiy xulosalar, rasmlar, vaksinatsiya pasporti" />
@@ -381,7 +374,6 @@ function DashboardShell() {
               </div>
             )}
 
-            {/* ===== PRESCRIPTIONS ===== */}
             {section === "prescriptions" && (
               <div className="flex flex-col gap-5">
                 <PageHead title="Mening" accent="retseptlarim" subtitle={`${prescriptions.filter((p) => p.active).length} ta faol · ${prescriptions.filter((p) => !p.active).length} ta tugagan`} />
@@ -405,7 +397,6 @@ function DashboardShell() {
               </div>
             )}
 
-            {/* ===== SAVED DOCTORS ===== */}
             {section === "saved" && (
               <div className="flex flex-col gap-5">
                 <PageHead title="Saqlangan" accent="shifokorlar" subtitle={`${savedDoctors.length} ta sevimli shifokor`} action={<Link href="/doctors" className="btn btn-outline"><Plus className="w-4 h-4" />Shifokor qo&apos;shish</Link>} />
@@ -436,7 +427,6 @@ function DashboardShell() {
               </div>
             )}
 
-            {/* ===== NOTIFICATIONS ===== */}
             {section === "notifications" && (
               <div className="flex flex-col gap-5">
                 <PageHead title="Bildirish" accent="nomalar" subtitle={`${unreadCount} ta o'qilmagan`} action={unreadCount > 0 ? <button onClick={markAllRead} className="btn btn-outline btn-sm">Hammasini o&apos;qilgan deb belgilash</button> : undefined} />
@@ -458,7 +448,6 @@ function DashboardShell() {
               </div>
             )}
 
-            {/* ===== PROFILE ===== */}
             {section === "profile" && (
               <div className="flex flex-col gap-5">
                 <PageHead title="Profil" accent="sozlamalari" subtitle="Shaxsiy va tibbiy ma'lumotlaringizni tahrirlang" />

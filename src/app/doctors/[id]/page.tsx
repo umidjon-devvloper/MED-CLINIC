@@ -12,6 +12,7 @@ import { DoctorTabs } from "@/components/doctors/DoctorTabs";
 import { DoctorActions } from "@/components/doctors/DoctorActions";
 import { DoctorBookingWidget } from "@/components/doctors/DoctorBookingWidget";
 import { MotionReveal } from "@/components/ui/motion";
+import { CountUp } from "@/components/ui/CountUp";
 
 export function generateStaticParams() {
   return doctors.map((d) => ({ id: d.id }));
@@ -21,9 +22,19 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const doc = doctors.find((d) => d.id === id);
   if (!doc) return { title: "Shifokor topilmadi" };
+  const desc = doc.bio?.slice(0, 160) ?? `${doc.specialty}, ${doc.experience} yil tajriba. Qabulga yoziling.`;
   return {
-    title: `${doc.name} — ${doc.specialty} · MED CLINIC`,
-    description: doc.bio?.slice(0, 160) ?? `${doc.specialty}, ${doc.experience} yil tajriba. Qabulga yoziling.`,
+    title: `${doc.name} — ${doc.specialty}`,
+    description: desc,
+    alternates: { canonical: `/doctors/${doc.id}` },
+    openGraph: {
+      title: `${doc.name} — ${doc.specialty}`,
+      description: desc,
+      type: "profile",
+      url: `/doctors/${doc.id}`,
+      images: [{ url: doc.photo, alt: doc.name }],
+    },
+    twitter: { card: "summary_large_image", title: doc.name, description: desc, images: [doc.photo] },
   };
 }
 
@@ -107,101 +118,123 @@ export default async function DoctorProfilePage({ params }: { params: Promise<{ 
 
   return (
     <>
-      {/* breadcrumb */}
-      <div className="bg-surface border-b border-line py-4">
-        <div className="container-x flex items-center gap-2 text-[13px] text-muted">
-          <Link href="/" className="hover:text-brand">Bosh sahifa</Link>
-          <ChevronRight className="w-3 h-3" />
-          <Link href="/doctors" className="hover:text-brand">Shifokorlar</Link>
-          <ChevronRight className="w-3 h-3" />
-          <span className="text-ink font-medium">{doc.name}</span>
-        </div>
-      </div>
+      {/* JSON-LD Physician for rich Google results */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Physician",
+            name: doc.name,
+            image: doc.photo,
+            jobTitle: doc.specialty,
+            medicalSpecialty: doc.specialty,
+            telephone: "+998712000000",
+            address: { "@type": "PostalAddress", addressLocality: doc.clinic || "Toshkent", addressCountry: "UZ" },
+            aggregateRating: { "@type": "AggregateRating", ratingValue: doc.rating, reviewCount: doc.reviews, bestRating: 5 },
+            priceRange: `${doc.price} UZS`,
+            url: `/doctors/${doc.id}`,
+          }),
+        }}
+      />
 
-      {/* hero */}
-      <section className="py-12 bg-surface border-b border-line relative overflow-hidden">
-        <div className="absolute -top-[200px] -right-[200px] w-[500px] h-[500px] pointer-events-none" style={{ background: "radial-gradient(closest-side, var(--brand-soft), transparent 70%)" }} />
-        <div className="container-x relative z-10 grid grid-cols-1 lg:grid-cols-[220px_1fr_auto] gap-6 lg:gap-10 items-start">
-          <div className="relative rounded-2xl overflow-hidden aspect-square grid place-items-end justify-center max-w-[220px] mx-auto lg:mx-0" style={{ background: colorMap[doc.color] }}>
-            <span className="absolute top-3.5 left-3.5 bg-surface text-accent text-[11.5px] font-semibold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5 shadow-sm z-20">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_var(--accent)]" />
-              Hozir onlayn
-            </span>
-            <div className="relative z-10 w-full h-full flex items-end justify-center">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={doc.photo}
-                alt={doc.name}
-                className="max-w-[95%] max-h-full object-contain object-bottom"
-                style={{ filter: "drop-shadow(0 10px 20px rgba(10,31,58,0.15))" }}
-              />
-            </div>
-          </div>
+      {/* PAGE HEAD — editorial, matches /doctors style */}
+      <section className="relative overflow-hidden pt-16 md:pt-20 pb-16 md:pb-20" style={{ background: "linear-gradient(180deg, #F5F8FD 0%, #EEF3FB 60%, var(--bg) 100%)" }}>
+        <div className="absolute top-[15%] right-[8%] w-[480px] h-[480px] rounded-full blur-[80px] opacity-30 pointer-events-none" style={{ background: "radial-gradient(closest-side, rgba(77,148,245,0.35), transparent 70%)" }} />
 
-          <div className="flex flex-col gap-2.5">
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className="text-[13px] text-brand font-semibold uppercase tracking-wider">{doc.specialty} · PhD</span>
-              <span className="inline-flex items-center gap-1 text-xs text-accent font-medium">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                Sertifikatlangan
+        <div className="container-wide relative">
+          {/* Breadcrumb */}
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12.5px] text-muted mb-8">
+            <Link href="/" className="hover:text-brand">Bosh sahifa</Link>
+            <ChevronRight className="w-3 h-3" />
+            <Link href="/doctors" className="hover:text-brand">Shifokorlar</Link>
+            <ChevronRight className="w-3 h-3" />
+            <span className="text-ink font-medium">{doc.name}</span>
+          </nav>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr_auto] gap-8 lg:gap-14 items-start">
+            {/* Photo tile */}
+            <div className="relative rounded-[20px] overflow-hidden aspect-square grid place-items-end justify-center max-w-[260px] mx-auto lg:mx-0 w-full" style={{ background: colorMap[doc.color] }}>
+              <span className="absolute top-3.5 left-3.5 bg-surface text-accent text-[11.5px] font-semibold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5 shadow-sm z-20">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_var(--accent)]" />
+                Hozir onlayn
               </span>
-            </div>
-            <h1 className="font-display font-normal text-[36px] md:text-[56px] tracking-tight leading-none my-1">
-              Dr. {firstName} <em className="italic text-brand">{lastName}</em>
-            </h1>
-            <p className="text-[15px] text-ink-soft my-1 mb-4">
-              {doc.credentials ?? "O'zbekiston Respublikasi Sog'liqni saqlash vazirligi tomonidan litsenziyalangan"}
-            </p>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-3 mb-5 px-5 py-5 bg-bg border border-line rounded-2xl">
-              <div className="flex flex-col gap-0.5">
-                <div className="font-display font-medium text-[28px] text-ink tracking-tight leading-none tabular-nums">
-                  {doc.experience}<em className="italic text-brand text-xl"> yil</em>
-                </div>
-                <div className="text-[11.5px] text-muted mt-1.5">Umumiy tajriba</div>
-              </div>
-              <div className="flex flex-col gap-0.5">
-                <div className="font-display font-medium text-[28px] text-ink tracking-tight leading-none tabular-nums inline-flex items-baseline gap-1">
-                  {doc.rating} <span className="text-warn text-xl">★</span>
-                </div>
-                <div className="text-[11.5px] text-muted mt-1.5">O&apos;rtacha reyting ({doc.reviews})</div>
-              </div>
-              <div className="flex flex-col gap-0.5">
-                <div className="font-display font-medium text-[28px] text-ink tracking-tight leading-none tabular-nums">3 420</div>
-                <div className="text-[11.5px] text-muted mt-1.5">Qabul qilgan bemor</div>
-              </div>
-              <div className="flex flex-col gap-0.5">
-                <div className="font-display font-medium text-[28px] text-ink tracking-tight leading-none tabular-nums">
-                  98<em className="italic text-brand text-xl">%</em>
-                </div>
-                <div className="text-[11.5px] text-muted mt-1.5">Qayta murojaat</div>
+              <div className="relative z-10 w-full h-full flex items-end justify-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={doc.photo}
+                  alt={doc.name}
+                  className="max-w-[95%] max-h-full object-contain object-bottom"
+                  style={{ filter: "drop-shadow(0 12px 24px rgba(10,31,58,0.18))" }}
+                />
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-1.5">
-              {(doc.tags ?? []).map((t) => (
-                <span key={t} className="px-3 py-1.5 bg-brand-soft text-brand text-xs font-medium rounded-full">
-                  {t}
-                </span>
-              ))}
+            {/* Main */}
+            <div className="flex flex-col gap-4">
+              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand inline-flex items-center gap-2.5">
+                <span className="w-8 h-px bg-brand" />
+                {doc.specialty} · PhD
+              </div>
+              <h1 className="font-display font-normal text-ink leading-[0.98] tracking-[-0.025em]" style={{ fontSize: "clamp(42px, 6vw, 80px)" }}>
+                Dr. {firstName} <em className="italic text-brand">{lastName}</em>.
+              </h1>
+              <p className="text-[15px] md:text-[16.5px] text-ink-soft leading-relaxed max-w-[60ch]">
+                {doc.credentials ?? "O'zbekiston Respublikasi Sog'liqni saqlash vazirligi tomonidan litsenziyalangan"}
+              </p>
+              <div className="inline-flex items-center gap-2 text-xs text-accent font-semibold mt-1">
+                <CheckCircle2 className="w-4 h-4" />
+                Sertifikatlangan mutaxassis
+              </div>
+
+              <div className="flex flex-wrap gap-1.5 mt-3">
+                {(doc.tags ?? []).map((t) => (
+                  <span key={t} className="px-3 py-1.5 bg-brand-soft text-brand text-[12px] font-semibold rounded-full">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2.5 lg:self-start lg:min-w-[220px] w-full">
+              <Link href={`/booking?doctor=${doc.id}`} style={{ color: "#fff" }} className="inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-ink !text-white px-6 py-4 rounded-2xl font-bold text-[14px] transition-colors shadow-[0_8px_20px_rgba(30,109,216,0.25)]">
+                <Calendar className="w-4 h-4" />
+                Qabulga yozilish
+              </Link>
+              <DoctorActions docId={doc.id} docName={doc.name} docPhoto={doc.photo} />
+              <div className="mt-3 pt-4 border-t border-line text-center">
+                <div className="text-[10.5px] uppercase tracking-wider text-muted font-bold">Qabul narxi</div>
+                <div className="font-display font-medium text-ink tabular-nums text-[28px] leading-none mt-1">
+                  {(doc.price / 1000).toFixed(0)}k<em className="italic text-brand text-base ml-1 not-italic">so&apos;m</em>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 lg:self-start min-w-full lg:min-w-[180px]">
-            <Link href={`/booking?doctor=${doc.id}`} className="btn btn-primary btn-lg justify-center">
-              <Calendar className="w-4 h-4" />
-              Qabulga yozilish
-            </Link>
-            <DoctorActions docId={doc.id} docName={doc.name} />
+          {/* Stats strip */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8 pt-10 mt-10 border-t border-line">
+            {[
+              { num: doc.experience, suffix: " yil",     label: "Umumiy tajriba",    dur: 1.2 },
+              { num: doc.rating,     suffix: " ★",       label: `${doc.reviews} sharh`, decimals: 1, dur: 1.4 },
+              { num: 3420,           suffix: "",         label: "Qabul qilgan bemor",  dur: 2.0 },
+              { num: 98,             suffix: "%",        label: "Qayta murojaat",      dur: 1.6 },
+            ].map((s, i) => (
+              <div key={i}>
+                <div className="font-display font-medium text-ink leading-none tracking-tight tabular-nums inline-flex items-baseline" style={{ fontSize: "clamp(36px, 4vw, 56px)" }}>
+                  <CountUp to={s.num} decimals={s.decimals ?? 0} duration={s.dur} />
+                  <em className="italic text-brand text-[0.55em] font-normal not-italic">{s.suffix}</em>
+                </div>
+                <div className="text-[11.5px] uppercase tracking-wider text-ink-soft font-semibold mt-3">{s.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       <DoctorTabs reviewCount={doc.reviews} />
 
-      {/* detail */}
       <section className="py-10 pb-16">
-        <div className="container-x grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-6 lg:gap-10 items-start">
+        <div className="container-wide grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-6 lg:gap-10 items-start">
           <div>
             <MotionReveal as="div" className="mb-6"><div id="about" className="bg-surface border border-line rounded-2xl p-5 md:p-8 scroll-mt-24">
               <h2 className="font-display font-normal text-[22px] md:text-[28px] tracking-tight leading-tight mb-4">

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Heart, Calendar, Star, CreditCard } from "lucide-react";
+import { Heart, Calendar, Star, CreditCard, Clock } from "lucide-react";
 import type { Doctor } from "@/lib/types";
 import { useFavorite, useToast } from "@/components/ui/Toast";
 
@@ -11,6 +11,15 @@ const colorMap: Record<string, string> = {
   lavender: "linear-gradient(165deg, #E4DFF5 0%, #C9BFE8 100%)",
   pink: "linear-gradient(165deg, #F5DFE8 0%, #ECC2D4 100%)",
 };
+
+const ALL_SLOTS = ["09:00", "10:30", "11:30", "13:00", "14:30", "15:30", "16:00", "17:30"];
+function nextSlots(docId: string, count = 2): string[] {
+  let h = 0;
+  for (let i = 0; i < docId.length; i++) h = ((h << 5) - h + docId.charCodeAt(i)) | 0;
+  const start = Math.abs(h) % (ALL_SLOTS.length - count);
+  return ALL_SLOTS.slice(start, start + count);
+}
+const dayLabel = (a: Doctor["available"]) => a === "today" ? "Bugun" : a === "tomorrow" ? "Ertaga" : "Dush";
 
 export function DoctorCard({ doc }: { doc: Doctor }) {
   return (
@@ -65,6 +74,23 @@ export function DoctorCard({ doc }: { doc: Doctor }) {
             <CreditCard className="w-3 md:w-3.5 h-3 md:h-3.5 text-brand" />
             {(doc.price / 1000).toFixed(0)}k
           </span>
+        </div>
+        {/* Next available slots */}
+        <div className="flex items-center gap-1.5 mt-1 text-[10.5px] md:text-[11.5px]">
+          <Clock className="w-3 h-3 md:w-3.5 md:h-3.5 text-muted shrink-0" />
+          <span className="text-muted">{dayLabel(doc.available)}:</span>
+          <div className="flex gap-1 flex-wrap">
+            {nextSlots(doc.id).map((t) => (
+              <Link
+                key={t}
+                href={`/booking?doctor=${doc.id}&time=${t}`}
+                onClick={(e) => e.stopPropagation()}
+                className="slot-chip font-semibold text-brand bg-brand-soft hover:bg-brand px-1.5 py-0.5 rounded tabular-nums transition-colors"
+              >
+                {t}
+              </Link>
+            ))}
+          </div>
         </div>
         <div className="flex gap-1.5 mt-2 md:mt-2.5">
           <Link

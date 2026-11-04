@@ -86,7 +86,6 @@ function BookingFlow() {
 
   return (
     <div className="min-h-screen bg-bg">
-      {/* MINI NAV */}
       <nav className="bg-white border-b border-line shadow-[0_2px_12px_rgba(10,31,58,0.04)]">
         <div className="container-x flex items-center gap-5 py-6 md:py-7" style={{ maxWidth: 1120 }}>
           <Link href="/" className="flex items-center gap-2.5 font-extrabold text-[1.1rem]">
@@ -108,7 +107,6 @@ function BookingFlow() {
         </div>
       </nav>
 
-      {/* STEPPER */}
       <div className="bg-white border-b border-line py-8 md:py-10">
         <div className="container-x" style={{ maxWidth: 1120 }}>
           <div className="grid grid-cols-6 gap-2 md:gap-3 max-w-[920px] mx-auto">
@@ -146,11 +144,9 @@ function BookingFlow() {
         </div>
       </div>
 
-      {/* BOOKING BODY */}
       <section className="py-8 md:py-10">
         <div className="container-x grid lg:grid-cols-[1fr_360px] gap-8 lg:gap-10 items-start" style={{ maxWidth: 1120 }}>
           <div>
-            {/* STEP HEAD */}
             <div className="mb-6">
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-soft text-brand text-[11.5px] font-semibold uppercase tracking-wider rounded-full mb-3">
                 {step}-qadam · 6 dan
@@ -163,7 +159,6 @@ function BookingFlow() {
               </p>
             </div>
 
-            {/* STEPS */}
             {step === 1 && (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {services.slice(0, 8).map((s) => (
@@ -210,7 +205,6 @@ function BookingFlow() {
 
             {step === 3 && (
               <>
-                {/* CALENDAR */}
                 <div className="bg-white border border-line rounded-2xl p-6 md:p-7">
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <h3 className="font-display font-normal text-[22px] md:text-[24px]" style={{ letterSpacing: "-0.01em" }}>
@@ -262,7 +256,6 @@ function BookingFlow() {
                   </div>
                 </div>
 
-                {/* TIMES */}
                 <div className="bg-white border border-line rounded-2xl p-6 md:p-7 mt-5">
                   <div className="flex items-baseline justify-between mb-5 flex-wrap gap-2">
                     <h3 className="font-display font-normal text-[20px] md:text-[22px]" style={{ letterSpacing: "-0.01em" }}>
@@ -390,7 +383,6 @@ function BookingFlow() {
               </div>
             )}
 
-            {/* ACTIONS */}
             {step < 6 && (
               <div className="flex justify-between items-center gap-4 mt-8 flex-col-reverse md:flex-row">
                 <button
@@ -412,7 +404,6 @@ function BookingFlow() {
             )}
           </div>
 
-          {/* SIDEBAR SUMMARY */}
           {step < 6 && (
             <aside className="hidden lg:block">
               <div className="bg-white border border-line rounded-[20px] p-7 sticky top-6 shadow-md">

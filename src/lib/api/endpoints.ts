@@ -1,4 +1,3 @@
-/** Backend endpoint paths — one place to rename when the API evolves. */
 export const endpoints = {
   doctors: {
     list:   "/doctors",

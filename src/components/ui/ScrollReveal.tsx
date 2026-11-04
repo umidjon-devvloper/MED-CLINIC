@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 
-/** Mount once in the root layout. Watches .scroll-reveal elements across every page and adds .in-view when they enter the viewport. */
 export function ScrollRevealProvider() {
   useEffect(() => {
     if (typeof IntersectionObserver === "undefined") return;

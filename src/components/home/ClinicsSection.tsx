@@ -5,24 +5,24 @@ import { clinics } from "@/lib/data/clinics";
 export function ClinicsSection() {
   const topClinics = clinics.slice(0, 3);
   return (
-    <section className="scroll-reveal py-16 md:py-20">
-      <div className="container-x">
-        <div className="flex justify-between items-end gap-6 mb-10 md:mb-12 flex-wrap">
-          <div>
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-soft text-brand text-xs font-semibold uppercase tracking-wider rounded-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-brand" />
+    <section className="scroll-reveal py-20 md:py-28">
+      <div className="container-wide">
+        <div className="flex items-end justify-between gap-8 flex-wrap mb-12 md:mb-16">
+          <div className="max-w-[640px]">
+            <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand mb-5 inline-flex items-center gap-2.5">
+              <span className="w-8 h-px bg-brand" />
               Klinikalar
-            </span>
-            <h2 className="font-display font-normal text-2xl md:text-[46px] mt-4 tracking-tight text-ink">
-              Shahar bo&apos;ylab <em className="italic text-brand">6 ta filial</em>
+            </div>
+            <h2 className="font-display font-normal text-ink leading-[0.98] tracking-[-0.025em]" style={{ fontSize: "clamp(36px, 5.5vw, 68px)" }}>
+              Shahar bo&apos;ylab <em className="italic text-brand">6 ta filial</em>.
             </h2>
-            <p className="text-sm md:text-base text-ink-soft mt-3 max-w-[44ch]">
+            <p className="text-[15px] md:text-[17px] text-ink-soft mt-5 max-w-[48ch] leading-relaxed">
               O&apos;zingizga qulay joydagi klinikani tanlang. Barcha filiallar bir xil standartda.
             </p>
           </div>
-          <Link href="/clinics" className="text-brand font-semibold text-sm inline-flex items-center gap-1 border-b border-brand pb-1">
+          <Link href="/clinics" className="group inline-flex items-center gap-2 text-brand hover:text-brand-ink font-semibold text-[14px] border-b-2 border-brand pb-1 transition-colors self-end">
             Xaritada ko&apos;rish
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5">

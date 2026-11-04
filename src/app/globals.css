@@ -66,6 +66,8 @@ a.bg-white, button.bg-white { color: var(--brand-ink); }
 a.arrow-circle:hover, button.arrow-circle:hover { color: #fff !important; }
 /* Service card arrow (inside a Link group) — white icon when the parent card is hovered */
 .group:hover .service-arrow { color: #fff !important; }
+/* Doctor card time slot chips — white text on brand background hover */
+a.slot-chip:hover { color: #fff !important; }
 /* Schedule cells: text turns white on hover (over brand/warn background) */
 button.sched-cell:hover, button.sched-cell-break:hover { color: #fff !important; }
 /* Doctor settings form input utility */
@@ -76,6 +78,12 @@ img { max-width: 100%; display: block; }
 
 /* utility classes */
 .container-x { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+/* Wider container — content pushes close to viewport edges with tight, premium side padding */
+.container-wide { width: 100%; max-width: 1920px; margin: 0 auto; padding-left: 1rem; padding-right: 1rem; }
+@media (min-width: 768px) { .container-wide { padding-left: 2rem; padding-right: 2rem; } }
+@media (min-width: 1024px) { .container-wide { padding-left: 2.5rem; padding-right: 2.5rem; } }
+@media (min-width: 1280px) { .container-wide { padding-left: 3rem; padding-right: 3rem; } }
+@media (min-width: 1536px) { .container-wide { padding-left: 4rem; padding-right: 4rem; } }
 .font-display { font-family: var(--font-display); }
 .text-balance { text-wrap: balance; }
 

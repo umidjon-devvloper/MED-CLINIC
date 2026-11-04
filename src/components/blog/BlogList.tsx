@@ -28,9 +28,8 @@ export function BlogList() {
 
   return (
     <>
-      {/* SEARCH + CATEGORIES */}
-      <section className="pt-6 pb-6">
-        <div className="container-x flex flex-col gap-4">
+      <section className="pt-10 pb-6">
+        <div className="container-wide flex flex-col gap-4">
           <div className="relative max-w-md">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
             <input
@@ -42,19 +41,13 @@ export function BlogList() {
             />
           </div>
           <div className="flex gap-2 items-center flex-nowrap overflow-x-auto scrollbar-hide md:flex-wrap" style={{ scrollbarWidth: "none" }}>
-            <button
-              onClick={() => { setCat("all"); setPage(1); }}
-              style={cat === "all" ? { color: "#fff" } : undefined}
-              className={`inline-flex items-center gap-1.5 py-2.5 px-4 border rounded-full text-[13.5px] font-medium transition-colors whitespace-nowrap shrink-0 ${cat === "all" ? "bg-brand text-white border-brand font-semibold" : "bg-white border-line text-ink-soft hover:border-brand hover:text-brand"}`}
-            >
-              Hammasi
-            </button>
             {articleCategories.map((c) => {
-              const on = cat === c.slug;
+              const slug = c.slug === "all" ? "all" : c.slug;
+              const on = cat === slug;
               return (
                 <button
                   key={c.slug}
-                  onClick={() => { setCat(c.slug); setPage(1); }}
+                  onClick={() => { setCat(slug); setPage(1); }}
                   style={on ? { color: "#fff" } : undefined}
                   className={`inline-flex items-center gap-1.5 py-2.5 px-4 border rounded-full text-[13.5px] font-medium transition-colors whitespace-nowrap shrink-0 ${on ? "bg-brand text-white border-brand font-semibold" : "bg-white border-line text-ink-soft hover:border-brand hover:text-brand"}`}
                 >
@@ -67,11 +60,10 @@ export function BlogList() {
         </div>
       </section>
 
-      {/* ARTICLES */}
-      <section className="pb-8">
-        <div className="container-x">
+      <section className="pb-20 lg:pb-28">
+        <div className="container-wide">
           {pageItems.length > 0 ? (
-            <MotionGrid key={`${cat}-${query}-${page}`} className="grid grid-cols-2 lg:grid-cols-3 gap-6">
+            <MotionGrid key={`${cat}-${query}-${page}`} className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {pageItems.map((a) => (
                 <MotionItem key={a.id}><ArticleCard article={a} /></MotionItem>
               ))}

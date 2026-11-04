@@ -3,7 +3,6 @@ import { endpoints } from "./endpoints";
 import { doctors as mockDoctors } from "@/lib/data/doctors";
 import type { Doctor } from "@/lib/types";
 
-/** Thin service layer — demo returns mock, prod will hit the real endpoint. */
 export const doctorsApi = {
   async list(filters?: { specialty?: string; city?: string; q?: string }): Promise<Doctor[]> {
     if (USE_MOCK) {

@@ -5,9 +5,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Plus, Eye, EyeOff, Phone, Lock, Mail, User, ArrowRight, Shield, Sparkles, Loader2, Stethoscope, Briefcase, GraduationCap } from "lucide-react";
+import { Plus, Eye, EyeOff, Phone, Lock, Mail, User, ArrowRight, Loader2, Stethoscope, Briefcase, GraduationCap } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import { registerAndLogin } from "@/lib/auth";
+import { AuthBackground } from "@/components/ui/AuthBackground";
 
 const registerSchema = z.object({
   firstName: z.string().min(2, "Ismni to'liq kiriting"),
@@ -57,63 +58,28 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-[1fr_1fr]">
-      {/* LEFT panel */}
-      <div className="hidden lg:flex relative overflow-hidden flex-col justify-between p-12 text-white" style={{ background: "linear-gradient(135deg, var(--brand-ink) 0%, var(--brand) 100%)" }}>
-        <div className="absolute bottom-[-100px] right-[-100px] w-[500px] h-[500px] rounded-full" style={{ background: "radial-gradient(closest-side, rgba(255,255,255,.12), transparent 70%)" }} />
-        <div className="absolute top-[-80px] left-[-80px] w-[260px] h-[260px] rounded-full" style={{ background: "radial-gradient(closest-side, rgba(255,255,255,.08), transparent 70%)" }} />
+    <div className="relative min-h-screen grid place-items-center p-4 md:p-6 py-10">
+      <AuthBackground />
 
-        <Link href="/" className="flex items-center gap-3 font-extrabold text-2xl tracking-wide relative z-10">
-          <span className="w-12 h-12 rounded-xl grid place-items-center bg-white/15 backdrop-blur">
-            <Plus className="w-6 h-6" strokeWidth={2.5} />
-          </span>
-          MED <em className="font-display italic font-medium text-[#BBD1EC] text-[1.6rem]">CLINIC</em>
-        </Link>
+      {/* Logo top-left */}
+      <Link href="/" className="absolute top-6 left-6 md:top-8 md:left-10 flex items-center gap-2.5 font-extrabold text-lg z-10">
+        <span className="w-10 h-10 rounded-xl grid place-items-center text-white relative" style={{ background: "linear-gradient(135deg, var(--brand), var(--brand-ink))", color: "#fff" }}>
+          <Plus className="w-5 h-5" strokeWidth={2.75} />
+          <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-accent border-2 border-surface" />
+        </span>
+        <span className="text-ink">MED</span>
+        <em className="font-display italic font-medium text-brand text-[1.2rem] -ml-0.5">CLINIC</em>
+      </Link>
 
-        <div className="relative z-10">
-          <h2 className="font-display font-normal text-4xl leading-tight mb-6">
-            Sog&apos;lig&apos;ingizni <em className="italic text-[#BBD1EC]">bir platforma</em>da boshqaring
-          </h2>
-          <div className="flex flex-col gap-4 mt-8">
-            {[
-              { ico: Sparkles, t: "Shaxsiy tibbiy karta", d: "Barcha qabullar, tahlillar va retseptlar bir joyda" },
-              { ico: Shield, t: "Xavfsiz saqlash", d: "Shifrlangan va faqat sizga ko'rinadigan ma'lumotlar" },
-              { ico: Sparkles, t: "SMS eslatmalar", d: "Qabul vaqtida o'z vaqtida xabar olasiz" },
-            ].map((f, i) => (
-              <div key={i} className="flex items-start gap-4">
-                <div className="w-11 h-11 rounded-xl bg-white/14 grid place-items-center shrink-0">
-                  <f.ico className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="font-semibold">{f.t}</div>
-                  <div className="text-[#BBD1EC] text-sm mt-0.5">{f.d}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="relative z-10 text-[#BBD1EC] text-xs">
-          © 2026 MED CLINIC · SSL himoyalangan
-        </div>
-      </div>
-
-      {/* RIGHT form */}
-      <div className="flex flex-col items-center justify-center p-6 md:p-10 bg-bg">
-        <div className="w-full max-w-md">
-          <Link href="/" className="lg:hidden flex items-center gap-2.5 font-extrabold text-lg mb-6">
-            <span className="w-10 h-10 rounded-xl grid place-items-center text-white" style={{ background: "linear-gradient(135deg, var(--brand), var(--brand-ink))" }}>
-              <Plus className="w-5 h-5" strokeWidth={2.5} />
-            </span>
-            MED <em className="font-display italic font-medium text-brand text-[1.3rem]">CLINIC</em>
-          </Link>
-
-          <h1 className="font-display font-normal text-3xl md:text-[38px] tracking-tight leading-tight text-ink">
-            Yangi <em className="italic text-brand">hisob</em> yarating
+      <div className="w-full max-w-lg relative">
+        <div className="text-center mb-7">
+          <h1 className="font-display font-normal text-ink leading-[1.05] tracking-[-0.02em]" style={{ fontSize: "clamp(30px, 3.5vw, 42px)" }}>
+            Yangi <em className="italic" style={{ background: "linear-gradient(135deg, #4D94F5 0%, #1E6DD8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>hisob</em> yarating
           </h1>
-          <p className="text-[14.5px] text-ink-soft mt-3 mb-5">
+          <p className="text-[14px] text-ink-soft mt-3">
             Hisobingiz bormi? <Link href="/login" className="text-brand font-semibold hover:underline">Kiring</Link>
           </p>
+        </div>
 
           {/* Role selector */}
           <div className="mb-5">
@@ -245,13 +211,12 @@ export default function RegisterPage() {
             </label>
             {errors.terms && <p className="text-xs text-danger -mt-1">{errors.terms.message}</p>}
 
-            <button type="submit" disabled={isSubmitting} style={{ color: "#fff" }} className="btn btn-primary btn-lg justify-center w-full mt-3 disabled:opacity-60">
+            <button type="submit" disabled={isSubmitting} style={{ color: "#fff", background: "linear-gradient(135deg, #4D94F5 0%, #1E6DD8 100%)" }} className="inline-flex items-center justify-center gap-2 !text-white rounded-2xl py-4 text-[15px] font-bold shadow-[0_10px_24px_rgba(30,109,216,0.3)] hover:shadow-[0_14px_32px_rgba(30,109,216,0.4)] hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:cursor-not-allowed mt-3">
               {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
               {isSubmitting ? "Yaratilmoqda..." : role === "doctor" ? "Shifokor sifatida ro'yxatdan o'tish" : "Ro'yxatdan o'tish"}
-              <ArrowRight className="w-4 h-4" />
+              {!isSubmitting && <ArrowRight className="w-4 h-4" />}
             </button>
           </form>
-        </div>
       </div>
     </div>
   );
