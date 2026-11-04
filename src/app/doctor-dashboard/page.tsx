@@ -151,20 +151,26 @@ function DoctorDashboardShell() {
       </aside>
 
       <div className="flex flex-col min-h-screen">
-        <header ref={topbarRef} className="bg-surface border-b border-line px-6 lg:px-8 py-4 flex items-center justify-between gap-4 sticky top-0 z-20">
-          <form onSubmit={(e) => { e.preventDefault(); toast.show(`Natijalar: "${globalSearch}"`, "info"); }} className="relative flex-1 max-w-md">
+        <header ref={topbarRef} className="bg-surface border-b border-line px-4 md:px-6 lg:px-8 py-3 md:py-4 flex items-center justify-between gap-2 md:gap-4 sticky top-0 z-20">
+          <Link href="/" className="lg:hidden flex items-center gap-1.5 font-extrabold text-[1rem] shrink-0">
+            <span className="w-8 h-8 rounded-[9px] grid place-items-center text-white" style={{ background: "linear-gradient(135deg, var(--brand), var(--brand-ink))", color: "#fff" }}>
+              <Plus className="w-[16px] h-[16px]" strokeWidth={2.75} />
+            </span>
+            <em className="font-display italic font-medium text-brand text-[1.1rem] -ml-0.5">MC</em>
+          </Link>
+          <form onSubmit={(e) => { e.preventDefault(); toast.show(`Natijalar: "${globalSearch}"`, "info"); }} className="relative flex-1 max-w-md hidden md:block">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
             <input value={globalSearch} onChange={(e) => setGlobalSearch(e.target.value)} type="text" placeholder="Bemor, qabul yoki tahlil qidiring..." className="w-full pl-11 pr-4 py-2.5 bg-bg border border-line rounded-xl text-sm text-ink outline-none focus:border-brand" />
           </form>
-          <div className="flex items-center gap-3 relative">
-            <select value={section} onChange={(e) => setSection(e.target.value as Section)} className="lg:hidden text-sm bg-bg border border-line rounded-lg px-3 py-2">
+          <div className="flex items-center gap-2 md:gap-3 relative ml-auto">
+            <select value={section} onChange={(e) => setSection(e.target.value as Section)} className="lg:hidden text-[12.5px] bg-bg border border-line rounded-lg px-2 py-2 max-w-[140px] sm:max-w-none">
               {sidebar.map((s) => <option key={s.key} value={s.key}>{s.label}</option>)}
             </select>
 
             <div className="relative">
-              <button onClick={() => { setNotifOpen((v) => !v); setMsgOpen(false); setUserOpen(false); }} className="relative w-10 h-10 rounded-xl bg-bg border border-line grid place-items-center text-ink-soft hover:text-brand hover:border-brand">
-                <Bell className="w-[18px] h-[18px]" />
-                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-danger text-white text-[10px] font-bold grid place-items-center" style={{ color: "#fff" }}>3</span>
+              <button onClick={() => { setNotifOpen((v) => !v); setMsgOpen(false); setUserOpen(false); }} className="relative w-9 md:w-10 h-9 md:h-10 rounded-xl bg-bg border border-line grid place-items-center text-ink-soft hover:text-brand hover:border-brand">
+                <Bell className="w-[16px] md:w-[18px] h-[16px] md:h-[18px]" />
+                <span className="absolute -top-1 -right-1 w-[18px] md:w-5 h-[18px] md:h-5 rounded-full bg-danger text-white text-[9.5px] md:text-[10px] font-bold grid place-items-center" style={{ color: "#fff" }}>3</span>
               </button>
               {notifOpen && (
                 <div className="absolute right-0 top-full mt-2 w-80 bg-surface border border-line rounded-xl shadow-xl z-30 overflow-hidden">
@@ -184,10 +190,10 @@ function DoctorDashboardShell() {
               )}
             </div>
 
-            <div className="relative">
-              <button onClick={() => { setMsgOpen((v) => !v); setNotifOpen(false); setUserOpen(false); }} className="relative w-10 h-10 rounded-xl bg-bg border border-line grid place-items-center text-ink-soft hover:text-brand hover:border-brand">
-                <MessageSquare className="w-[18px] h-[18px]" />
-                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-brand text-white text-[10px] font-bold grid place-items-center" style={{ color: "#fff" }}>5</span>
+            <div className="relative hidden sm:block">
+              <button onClick={() => { setMsgOpen((v) => !v); setNotifOpen(false); setUserOpen(false); }} className="relative w-9 md:w-10 h-9 md:h-10 rounded-xl bg-bg border border-line grid place-items-center text-ink-soft hover:text-brand hover:border-brand">
+                <MessageSquare className="w-[16px] md:w-[18px] h-[16px] md:h-[18px]" />
+                <span className="absolute -top-1 -right-1 w-[18px] md:w-5 h-[18px] md:h-5 rounded-full bg-brand text-white text-[9.5px] md:text-[10px] font-bold grid place-items-center" style={{ color: "#fff" }}>5</span>
               </button>
               {msgOpen && (
                 <div className="absolute right-0 top-full mt-2 w-80 bg-surface border border-line rounded-xl shadow-xl z-30 overflow-hidden">
@@ -208,13 +214,13 @@ function DoctorDashboardShell() {
             </div>
 
             <div className="relative">
-              <button onClick={() => { setUserOpen((v) => !v); setNotifOpen(false); setMsgOpen(false); }} className="flex items-center gap-2.5 pl-3 border-l border-line">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#4D94F5] to-[#1E6DD8] text-white font-bold grid place-items-center text-sm" style={{ color: "#fff" }}>{settings.firstName[0]}{settings.lastName[0]}</div>
-                <div className="hidden md:block text-left">
+              <button onClick={() => { setUserOpen((v) => !v); setNotifOpen(false); setMsgOpen(false); }} className="flex items-center gap-2.5 pl-2 sm:pl-3 sm:border-l sm:border-line">
+                <div className="w-9 md:w-10 h-9 md:h-10 rounded-full bg-gradient-to-br from-[#4D94F5] to-[#1E6DD8] text-white font-bold grid place-items-center text-[12px] md:text-sm" style={{ color: "#fff" }}>{settings.firstName[0]}{settings.lastName[0]}</div>
+                <div className="hidden xl:block text-left">
                   <div className="text-[13.5px] font-bold text-ink">Dr. {settings.firstName} {settings.lastName}</div>
                   <div className="text-[11.5px] text-muted">{settings.specialty}</div>
                 </div>
-                <ChevronDown className={`w-3.5 h-3.5 text-muted hidden md:block transition-transform ${userOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-3.5 h-3.5 text-muted hidden xl:block transition-transform ${userOpen ? "rotate-180" : ""}`} />
               </button>
               {userOpen && (
                 <div className="absolute right-0 top-full mt-2 w-56 bg-surface border border-line rounded-xl shadow-xl z-30 overflow-hidden">
@@ -236,7 +242,7 @@ function DoctorDashboardShell() {
           </div>
         </header>
 
-        <main className="p-6 lg:p-8 flex flex-col gap-6">
+        <main className="p-4 md:p-6 lg:p-8 flex flex-col gap-5 md:gap-6">
           {section === "overview" && (
             <MotionReveal>
               <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
@@ -594,7 +600,7 @@ function DoctorDashboardShell() {
                 <div className="flex flex-col gap-6">
                   {/* --- Asosiy --- */}
                   <SettingsCard title="Asosiy ma'lumotlar" desc="Katalogda va profilda ko'rinadi">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                       <Field label="Ism"><input value={settings.firstName} onChange={(e) => setSettings({ ...settings, firstName: e.target.value })} className="field" /></Field>
                       <Field label="Familiya"><input value={settings.lastName} onChange={(e) => setSettings({ ...settings, lastName: e.target.value })} className="field" /></Field>
                     </div>
@@ -603,10 +609,12 @@ function DoctorDashboardShell() {
                         {["Kardiologiya", "Nevrologiya", "Pediatriya", "Dermatologiya", "Terapiya", "Stomatologiya", "Oftalmologiya", "LOR", "Ginekologiya", "Endokrinologiya"].map((s) => <option key={s}>{s}</option>)}
                       </select>
                     </Field>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                       <Field label="Tajriba (yil)"><input type="number" value={settings.experience} onChange={(e) => setSettings({ ...settings, experience: +e.target.value })} className="field" /></Field>
                       <Field label="Qabul narxi (so'm)"><input type="number" value={settings.price} onChange={(e) => setSettings({ ...settings, price: +e.target.value })} step={10000} className="field" /></Field>
-                      <Field label="Tillar"><input value={settings.languages} onChange={(e) => setSettings({ ...settings, languages: e.target.value })} placeholder="O'zbek, Rus, Ingliz" className="field" /></Field>
+                      <div className="col-span-2 md:col-span-1">
+                        <Field label="Tillar"><input value={settings.languages} onChange={(e) => setSettings({ ...settings, languages: e.target.value })} placeholder="O'zbek, Rus, Ingliz" className="field" /></Field>
+                      </div>
                     </div>
                     <label className="inline-flex items-center gap-2.5 cursor-pointer mt-2">
                       <span className="relative inline-block w-10 h-6">
@@ -636,9 +644,9 @@ function DoctorDashboardShell() {
                   <SettingsCard title="Ta'lim va tajriba" desc="Yil bo'yicha tartibda ko'rsatiladi">
                     <div className="flex flex-col gap-3">
                       {settings.education.map((e, i) => (
-                        <div key={i} className="border border-line rounded-xl p-3.5 grid grid-cols-[70px_1fr_auto] gap-3 items-start">
-                          <input value={e.year} onChange={(ev) => { const n = [...settings.education]; n[i] = { ...n[i], year: ev.target.value }; setSettings({ ...settings, education: n }); }} placeholder="2010" className="field text-center" />
-                          <div className="flex flex-col gap-2">
+                        <div key={i} className="border border-line rounded-xl p-3 md:p-3.5 grid grid-cols-[60px_1fr_auto] md:grid-cols-[70px_1fr_auto] gap-2 md:gap-3 items-start">
+                          <input value={e.year} onChange={(ev) => { const n = [...settings.education]; n[i] = { ...n[i], year: ev.target.value }; setSettings({ ...settings, education: n }); }} placeholder="2010" className="field text-center text-[13px]" />
+                          <div className="flex flex-col gap-2 min-w-0">
                             <input value={e.title} onChange={(ev) => { const n = [...settings.education]; n[i] = { ...n[i], title: ev.target.value }; setSettings({ ...settings, education: n }); }} placeholder="Universitet / Diplom nomi" className="field font-semibold" />
                             <input value={e.desc} onChange={(ev) => { const n = [...settings.education]; n[i] = { ...n[i], desc: ev.target.value }; setSettings({ ...settings, education: n }); }} placeholder="Tavsif" className="field" />
                             <input value={e.where} onChange={(ev) => { const n = [...settings.education]; n[i] = { ...n[i], where: ev.target.value }; setSettings({ ...settings, education: n }); }} placeholder="Shahar, Davlat" className="field text-[12.5px]" />
@@ -654,9 +662,9 @@ function DoctorDashboardShell() {
                   <SettingsCard title="Taklif qilinadigan xizmatlar" desc="Profil sahifasida narx ro'yxati sifatida chiqadi">
                     <div className="flex flex-col gap-2">
                       {settings.extraServices.map((s, i) => (
-                        <div key={i} className="grid grid-cols-[1fr_160px_auto] gap-2 items-center">
+                        <div key={i} className="grid grid-cols-[1fr_110px_auto] md:grid-cols-[1fr_160px_auto] gap-2 items-center">
                           <input value={s.name} onChange={(ev) => { const n = [...settings.extraServices]; n[i] = { ...n[i], name: ev.target.value }; setSettings({ ...settings, extraServices: n }); }} placeholder="Xizmat nomi" className="field" />
-                          <input type="number" value={s.price} onChange={(ev) => { const n = [...settings.extraServices]; n[i] = { ...n[i], price: +ev.target.value }; setSettings({ ...settings, extraServices: n }); }} step={10000} placeholder="Narx (so'm)" className="field tabular-nums" />
+                          <input type="number" value={s.price} onChange={(ev) => { const n = [...settings.extraServices]; n[i] = { ...n[i], price: +ev.target.value }; setSettings({ ...settings, extraServices: n }); }} step={10000} placeholder="Narx" className="field tabular-nums" />
                           <button type="button" onClick={() => { const n = settings.extraServices.filter((_, k) => k !== i); setSettings({ ...settings, extraServices: n }); }} className="w-9 h-9 rounded-lg text-ink-soft hover:bg-danger-soft hover:text-danger grid place-items-center"><Trash2 className="w-4 h-4" /></button>
                         </div>
                       ))}
@@ -664,16 +672,16 @@ function DoctorDashboardShell() {
                     </div>
                   </SettingsCard>
 
-                  <div className="flex gap-2 sticky bottom-4">
-                    <button type="submit" className="btn btn-primary"><Save className="w-4 h-4" />Barcha o&apos;zgarishlarni saqlash</button>
-                    <button type="button" onClick={() => { try { const raw = localStorage.getItem(SETTINGS_KEY); if (raw) setSettings(JSON.parse(raw)); } catch { /* ignore */ } toast.show("Oxirgi saqlangan versiyaga qaytarildi", "info"); }} className="btn btn-outline">Bekor qilish</button>
+                  <div className="flex flex-col sm:flex-row gap-2 sticky bottom-4">
+                    <button type="submit" className="btn btn-primary w-full sm:w-auto justify-center"><Save className="w-4 h-4" /><span className="truncate">Barcha o&apos;zgarishlarni saqlash</span></button>
+                    <button type="button" onClick={() => { try { const raw = localStorage.getItem(SETTINGS_KEY); if (raw) setSettings(JSON.parse(raw)); } catch { /* ignore */ } toast.show("Oxirgi saqlangan versiyaga qaytarildi", "info"); }} className="btn btn-outline w-full sm:w-auto justify-center">Bekor qilish</button>
                   </div>
                 </div>
 
                 {/* --- Sidebar preview --- */}
-                <aside className="flex flex-col gap-4 lg:sticky lg:top-24 lg:self-start">
-                  <div className="bg-surface border border-line rounded-2xl p-6 text-center">
-                    <div className="relative w-28 h-28 mx-auto mb-3">
+                <aside className="flex flex-col gap-4 lg:sticky lg:top-24 lg:self-start order-first lg:order-none">
+                  <div className="bg-surface border border-line rounded-2xl p-4 md:p-6 text-center">
+                    <div className="relative w-24 md:w-28 h-24 md:h-28 mx-auto mb-3">
                       <div className="w-full h-full rounded-full bg-gradient-to-br from-[#4D94F5] to-[#1E6DD8] text-white font-bold grid place-items-center text-3xl" style={{ color: "#fff" }}>{settings.firstName[0]}{settings.lastName[0]}</div>
                       {settings.online && <span className="absolute bottom-1 right-1 w-5 h-5 bg-accent border-[3px] border-white rounded-full" />}
                     </div>

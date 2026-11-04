@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Menu, Plus, Phone, ChevronDown, LogOut, LayoutDashboard, Stethoscope, UserCircle } from "lucide-react";
-import { MobileDrawer } from "./MobileDrawer";
+import { Plus, Phone, ChevronDown, LogOut, LayoutDashboard, Stethoscope, UserCircle } from "lucide-react";
 import { getUser, logout, type User } from "@/lib/auth";
 
 const navLinks = [
@@ -33,7 +32,6 @@ function displayName(u: User): string {
 
 export function Header() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -163,14 +161,9 @@ export function Header() {
               <span className="hidden sm:inline">Qabulga yozilish</span>
               <span className="sm:hidden">Qabul</span>
             </Link>
-            <button onClick={() => setOpen(true)} className="lg:hidden w-9 h-9 rounded-[9px] bg-surface border border-line text-ink grid place-items-center" aria-label="Menyu">
-              <Menu className="w-[18px] h-[18px]" />
-            </button>
           </div>
         </div>
       </nav>
-
-      <MobileDrawer open={open} onClose={() => setOpen(false)} />
     </>
   );
 }

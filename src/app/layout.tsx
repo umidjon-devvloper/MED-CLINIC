@@ -3,6 +3,7 @@ import { Fraunces, Manrope } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { ToastProvider } from "@/components/ui/Toast";
 import { ScrollRevealProvider } from "@/components/ui/ScrollReveal";
 import { PageTransition } from "@/components/ui/motion";
@@ -132,6 +133,7 @@ export default function RootLayout({
             <PageTransition>{children}</PageTransition>
           </main>
           <Footer />
+          <MobileBottomNav />
         </ToastProvider>
       </body>
     </html>

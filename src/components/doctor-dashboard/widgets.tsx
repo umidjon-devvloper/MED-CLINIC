@@ -5,10 +5,10 @@ import { Plus, X } from "lucide-react";
 
 export function SettingsCard({ title, desc, children }: { title: string; desc?: string; children: ReactNode }) {
   return (
-    <div className="bg-surface border border-line rounded-2xl p-6 flex flex-col gap-4">
+    <div className="bg-surface border border-line rounded-2xl p-4 md:p-6 flex flex-col gap-4">
       <div>
-        <h2 className="font-display font-normal text-xl text-ink tracking-tight">{title}</h2>
-        {desc && <p className="text-[12.5px] text-muted mt-0.5">{desc}</p>}
+        <h2 className="font-display font-normal text-[17px] md:text-xl text-ink tracking-tight">{title}</h2>
+        {desc && <p className="text-[12px] md:text-[12.5px] text-muted mt-0.5">{desc}</p>}
       </div>
       {children}
     </div>
@@ -18,7 +18,7 @@ export function SettingsCard({ title, desc, children }: { title: string; desc?: 
 export function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-bold text-ink-soft mb-1.5 uppercase tracking-wide">{label}</label>
+      <label className="block text-[10.5px] md:text-xs font-bold text-ink-soft mb-1.5 uppercase tracking-wide">{label}</label>
       {children}
     </div>
   );
@@ -53,11 +53,11 @@ export function TagsEditor({ tags, onChange }: { tags: string[]; onChange: (t: s
 
 export function SectionHeader({ title, accent, subtitle }: { title: string; accent: string; subtitle: string }) {
   return (
-    <div className="mb-6">
-      <h1 className="font-display font-normal text-3xl md:text-[36px] tracking-tight leading-tight">
+    <div className="mb-5 md:mb-6">
+      <h1 className="font-display font-normal text-[26px] md:text-[36px] tracking-tight leading-tight">
         {title} <em className="italic text-brand">{accent}</em>
       </h1>
-      <p className="text-sm text-ink-soft mt-1.5">{subtitle}</p>
+      <p className="text-[13px] md:text-sm text-ink-soft mt-1.5">{subtitle}</p>
     </div>
   );
 }

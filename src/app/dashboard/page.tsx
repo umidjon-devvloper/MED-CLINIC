@@ -11,6 +11,7 @@ import { AuthGate } from "@/components/ui/AuthGate";
 import { useToast } from "@/components/ui/Toast";
 import { getUser, setUser as saveUser } from "@/lib/auth";
 import { doctors } from "@/lib/data/doctors";
+import { CountUp } from "@/components/ui/CountUp";
 
 type Section = "overview" | "appointments" | "results" | "documents" | "prescriptions" | "saved" | "notifications" | "profile";
 
@@ -26,10 +27,10 @@ const sidebarLinks: { key: Section; icon: typeof HomeIcon; label: string; badge?
 ];
 
 const stats = [
-  { label: "Keyingi qabul", num: "3", em: " kun", trend: "+SMS keldi", color: "brand" },
-  { label: "Umumiy qabullar", num: "24", trend: "+3 oyda", color: "accent" },
-  { label: "Tahlillar", num: "12", em: " ta", trend: "2 ta yangi", color: "warn" },
-  { label: "O'rtacha reyting", num: "4.9", em: " / 5", trend: "yuqori", color: "danger" },
+  { label: "Keyingi qabul",   num: 3,   em: " kun",   trend: "+SMS keldi",  color: "brand",  icon: Calendar },
+  { label: "Umumiy qabullar", num: 24,  em: "",       trend: "+3 oyda",     color: "accent", icon: FileText },
+  { label: "Tahlillar",       num: 12,  em: " ta",    trend: "2 ta yangi",  color: "warn",   icon: FileText },
+  { label: "O'rtacha reyting", num: 4.9, em: " / 5",  trend: "yuqori",      color: "danger", icon: Star, decimals: 1 },
 ];
 
 const appts = [
@@ -122,129 +123,142 @@ function DashboardShell() {
 
   return (
     <div className="min-h-screen bg-bg">
-      <nav className="bg-surface border-b border-line shadow-[0_2px_12px_rgba(10,31,58,0.04)]">
-        <div className="container-x flex items-center gap-4 py-6 md:py-7">
-          <Link href="/" className="flex items-center gap-2.5 font-extrabold text-[1.15rem] tracking-wide">
-            <span className="w-10 h-10 rounded-xl grid place-items-center text-white relative overflow-hidden shadow-[0_6px_16px_rgba(30,109,216,.28)]" style={{ background: "linear-gradient(135deg, var(--brand) 0%, var(--brand-ink) 100%)", color: "#fff" }}>
-              <Plus className="w-5 h-5" strokeWidth={2.5} />
+      <nav className="sticky top-0 z-30 bg-surface/80 backdrop-blur-md border-b border-line/60">
+        <div className="container-wide flex items-center gap-2 md:gap-4 py-3 md:py-4">
+          <Link href="/" className="flex items-center gap-1.5 md:gap-2 font-extrabold text-[1rem] md:text-[1.1rem] tracking-tight shrink-0">
+            <span className="w-8 h-8 md:w-9 md:h-9 rounded-[10px] grid place-items-center text-white relative" style={{ background: "linear-gradient(135deg, var(--brand), var(--brand-ink))", color: "#fff" }}>
+              <Plus className="w-[16px] md:w-[18px] h-[16px] md:h-[18px]" strokeWidth={2.75} />
+              <span className="absolute -top-0.5 -right-0.5 w-2 md:w-2.5 h-2 md:h-2.5 rounded-full bg-accent border-2 border-surface" />
             </span>
-            MED <em className="font-display italic font-medium text-brand text-[1.3rem] tracking-tight">CLINIC</em>
+            <span className="text-ink">MED</span>
+            <em className="font-display italic font-medium text-brand text-[1.1rem] md:text-[1.2rem] tracking-tight -ml-0.5">CLINIC</em>
           </Link>
 
-          <div className="ml-auto flex gap-2 items-center">
-            <button aria-label="Qidirish" onClick={() => toast.show("Qidirish — tez orada", "info")} className="w-10 h-10 rounded-[10px] border border-line-strong bg-surface text-ink-soft hover:text-brand hover:border-brand grid place-items-center transition-colors">
-              <Search className="w-[17px] h-[17px]" />
+          <div className="ml-auto flex gap-1.5 md:gap-2 items-center">
+            <button aria-label="Qidirish" onClick={() => toast.show("Qidirish — tez orada", "info")} className="hidden sm:grid w-9 h-9 rounded-[9px] border border-line bg-surface text-ink-soft hover:text-brand hover:border-brand place-items-center transition-colors">
+              <Search className="w-[16px] h-[16px]" />
             </button>
-            <button aria-label="Bildirishnomalar" onClick={() => setSection("notifications")} className="relative w-10 h-10 rounded-[10px] border border-line-strong bg-surface text-ink-soft hover:text-brand hover:border-brand grid place-items-center transition-colors">
-              <Bell className="w-[17px] h-[17px]" />
-              {unreadCount > 0 && <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1.5 rounded-full bg-danger text-white text-[10.5px] font-bold grid place-items-center border-2 border-surface" style={{ color: "#fff" }}>{unreadCount}</span>}
+            <button aria-label="Bildirishnomalar" onClick={() => setSection("notifications")} className="relative w-9 h-9 rounded-[9px] border border-line bg-surface text-ink-soft hover:text-brand hover:border-brand grid place-items-center transition-colors">
+              <Bell className="w-[16px] h-[16px]" />
+              {unreadCount > 0 && <span className="absolute -top-1 -right-1 min-w-[17px] h-[17px] px-1 rounded-full bg-danger text-white text-[10px] font-bold grid place-items-center border-2 border-surface" style={{ color: "#fff" }}>{unreadCount}</span>}
             </button>
-            <button aria-label="Xabarlar" onClick={() => toast.show("Xabarlar — tez orada", "info")} className="relative w-10 h-10 rounded-[10px] border border-line-strong bg-surface text-ink-soft hover:text-brand hover:border-brand grid place-items-center transition-colors">
-              <MessageSquare className="w-[17px] h-[17px]" />
-              <span className="absolute top-[7px] right-[7px] w-2 h-2 rounded-full bg-danger border-2 border-surface" />
+            <button aria-label="Xabarlar" onClick={() => toast.show("Xabarlar — tez orada", "info")} className="hidden sm:grid relative w-9 h-9 rounded-[9px] border border-line bg-surface text-ink-soft hover:text-brand hover:border-brand place-items-center transition-colors">
+              <MessageSquare className="w-[16px] h-[16px]" />
+              <span className="absolute top-[6px] right-[6px] w-1.5 h-1.5 rounded-full bg-danger border border-surface" />
             </button>
-            <div className="user-chip flex items-center gap-2.5 pl-1 pr-3.5 py-1 bg-surface border border-line rounded-full">
-              <span className="w-8 h-8 rounded-full text-white grid place-items-center font-bold text-xs" style={{ background: "linear-gradient(135deg, var(--brand-soft), var(--brand))", color: "#fff" }}>{profile.firstName[0]}{profile.lastName[0]}</span>
-              <span className="nm hidden sm:inline text-[13.5px] font-semibold text-ink">{profile.firstName} {profile.lastName[0]}.</span>
-              <ChevronDown className="w-3 h-3 text-muted" />
-            </div>
+            <button onClick={() => setSection("profile")} className="flex items-center gap-2 pl-2 sm:pl-2.5 sm:border-l sm:border-line sm:ml-1">
+              <span className="w-8 h-8 rounded-full text-white grid place-items-center font-bold text-[11px]" style={{ background: "linear-gradient(135deg, var(--brand), var(--brand-ink))", color: "#fff" }}>{profile.firstName[0]}{profile.lastName[0]}</span>
+              <span className="hidden sm:inline text-[13px] font-semibold text-ink">{profile.firstName} {profile.lastName[0]}.</span>
+              <ChevronDown className="w-3 h-3 text-muted hidden sm:block" />
+            </button>
           </div>
         </div>
       </nav>
 
-      <section className="py-8 md:py-10">
-        <div className="container-x grid lg:grid-cols-[240px_1fr] gap-6">
+      <section className="py-6 md:py-10 lg:py-14 overflow-x-clip">
+        <div className="container-wide grid lg:grid-cols-[260px_1fr] gap-5 md:gap-8 lg:gap-12">
 
-          <aside className="bg-surface border border-line rounded-2xl p-4 lg:p-6 lg:sticky lg:top-4 self-start flex flex-col gap-3">
-            <div className="flex lg:flex-col items-center gap-3 lg:gap-1.5 pb-4 border-b border-line text-center">
-              <div className="w-10 h-10 lg:w-[68px] lg:h-[68px] rounded-full grid place-items-center text-white font-bold text-sm lg:text-2xl shrink-0" style={{ background: "linear-gradient(135deg, var(--brand-soft), var(--brand))", color: "#fff" }}>{profile.firstName[0]}{profile.lastName[0]}</div>
-              <div className="flex flex-col items-start lg:items-center">
-                <div className="font-bold text-[14px] lg:text-[15px] text-ink">{profile.firstName} {profile.lastName}</div>
-                <div className="text-[11.5px] text-muted tabular-nums">ID: MC-01-24892</div>
+          <aside className="lg:sticky lg:top-24 self-start flex flex-col gap-3 lg:gap-5 -mx-4 lg:mx-0 sticky top-[57px] md:top-[65px] z-20 bg-bg/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none py-2 lg:py-0 border-b border-line/60 lg:border-0 min-w-0 max-w-[100vw]">
+            {/* User card — desktop only (mobile shows avatar in top nav) */}
+            <div className="hidden lg:block bg-surface border border-line rounded-[20px] p-5 lg:p-6">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-full grid place-items-center text-white font-bold text-base lg:text-lg shrink-0" style={{ background: "linear-gradient(135deg, #4D94F5, #0E3F8C)", color: "#fff" }}>{profile.firstName[0]}{profile.lastName[0]}</div>
+                <div className="min-w-0">
+                  <div className="font-bold text-[14px] lg:text-[15px] text-ink truncate">{profile.firstName} {profile.lastName}</div>
+                  <div className="text-[11px] text-muted tabular-nums mt-0.5">ID MC-01-24892</div>
+                </div>
               </div>
             </div>
 
-            <nav className="flex lg:flex-col flex-row gap-1 overflow-x-auto lg:overflow-visible scrollbar-hide">
+            {/* Nav — pills on mobile, vertical list on desktop */}
+            <nav className="flex lg:flex-col flex-row gap-1.5 lg:gap-0.5 overflow-x-auto lg:overflow-visible scrollbar-hide px-4 lg:px-0">
               {sidebarLinks.map((link) => {
                 const active = section === link.key;
                 const badge = link.key === "notifications" ? unreadCount : link.badge;
                 return (
-                  <button key={link.key} onClick={() => setSection(link.key)} className={`flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-sm font-medium whitespace-nowrap transition-colors w-full text-left ${active ? "bg-brand-soft text-brand font-semibold" : "text-ink-soft hover:bg-bg hover:text-ink"}`}>
-                    <link.icon className="w-[17px] h-[17px] shrink-0" />
+                  <button key={link.key} onClick={() => setSection(link.key)} className={`flex items-center gap-2 lg:gap-3 px-3 lg:px-3 py-2 lg:py-2.5 rounded-full lg:rounded-[10px] text-[12.5px] lg:text-[13.5px] whitespace-nowrap transition-colors lg:w-full text-left shrink-0 lg:shrink border lg:border-0 ${active ? "bg-brand-soft text-brand font-semibold border-brand/20" : "font-medium text-ink-soft bg-surface lg:bg-transparent border-line hover:bg-bg hover:text-ink"}`}>
+                    <link.icon className="w-[15px] lg:w-[17px] h-[15px] lg:h-[17px] shrink-0" />
                     {link.label}
-                    {badge ? <span style={{ color: "#fff" }} className="ml-auto min-w-[20px] h-5 px-1.5 rounded-full bg-brand text-[11px] font-bold grid place-items-center tabular-nums hidden lg:grid">{badge}</span> : null}
+                    {badge ? <span style={{ color: "#fff" }} className="min-w-[18px] lg:min-w-[20px] h-[18px] lg:h-5 px-1 lg:px-1.5 rounded-full bg-brand text-[10px] lg:text-[11px] font-bold grid place-items-center tabular-nums lg:ml-auto">{badge}</span> : null}
                   </button>
                 );
               })}
-              <div className="h-px bg-line my-2 hidden lg:block" />
-              <button onClick={onLogout} className="flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-sm font-medium text-danger hover:bg-danger-soft whitespace-nowrap transition-colors w-full text-left">
-                <LogOut className="w-[17px] h-[17px] shrink-0" />
+              <div className="h-px bg-line my-3 hidden lg:block" />
+              <button onClick={onLogout} className="flex items-center gap-2 lg:gap-3 px-3 py-2 lg:py-2.5 rounded-full lg:rounded-[10px] text-[12.5px] lg:text-[13.5px] font-medium text-danger bg-surface lg:bg-transparent border border-danger/15 lg:border-0 hover:bg-danger-soft whitespace-nowrap transition-colors lg:w-full text-left shrink-0 lg:shrink">
+                <LogOut className="w-[15px] lg:w-[17px] h-[15px] lg:h-[17px] shrink-0" />
                 Chiqish
               </button>
             </nav>
           </aside>
 
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5 min-w-0">
 
             {section === "overview" && (
               <>
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3">
-                  <div>
-                    <h1 className="font-display font-normal text-2xl md:text-[42px] tracking-tight leading-none text-ink">
-                      Xush kelibsiz, <em className="italic text-brand">{profile.firstName}</em>
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 sm:gap-4">
+                  <div className="min-w-0">
+                    <div className="text-[10.5px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-brand mb-2.5 md:mb-4 inline-flex items-center gap-2.5">
+                      <span className="w-6 md:w-8 h-px bg-brand" />
+                      Shaxsiy kabinet
+                    </div>
+                    <h1 className="font-display font-normal text-ink leading-[1.02] md:leading-[0.98] tracking-[-0.025em] break-words" style={{ fontSize: "clamp(24px, 7vw, 56px)" }}>
+                      Xush kelibsiz, <em className="italic text-brand">{profile.firstName}</em>.
                     </h1>
-                    <p className="text-[13px] md:text-[14.5px] text-ink-soft mt-2">Mana sizning tibbiy ma&apos;lumotlaringiz va yaqinlashayotgan qabullar.</p>
+                    <p className="text-[13px] md:text-[15.5px] text-ink-soft mt-2 md:mt-3 max-w-[54ch]">
+                      Yaqinlashayotgan qabullar, tahlillar va tibbiy hujjatlaringiz bir joyda.
+                    </p>
                   </div>
-                  <div className="text-left sm:text-right text-xs md:text-[13px] text-muted">
-                    <b className="block text-ink font-display font-medium text-base md:text-xl tracking-tight">Juma, 7-noyabr</b>
-                    Bugun · 2026
+                  <div className="flex sm:flex-col items-baseline sm:items-end gap-1.5 sm:gap-0 text-left sm:text-right text-[11px] md:text-[13px] text-muted shrink-0">
+                    <b className="text-ink font-display font-medium text-[15px] md:text-2xl tracking-tight">Juma, 7-noyabr</b>
+                    <span>Bugun · 2026</span>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 md:gap-4">
                   {stats.map((s, i) => (
-                    <button key={i} onClick={() => setSection(i === 0 || i === 1 ? "appointments" : i === 2 ? "results" : "overview")} className="text-left bg-surface border border-line rounded-xl p-3 md:p-5 flex flex-col gap-0.5 relative overflow-hidden hover:-translate-y-0.5 hover:shadow-md transition-all">
-                      <div className="text-[9.5px] md:text-[11.5px] text-muted uppercase tracking-wider font-semibold">{s.label}</div>
-                      <div className="font-display text-lg md:text-[32px] font-medium text-ink tracking-tight tabular-nums leading-tight">
-                        {s.num}{s.em && <em className="italic text-xs md:text-base text-brand ml-1">{s.em}</em>}
+                    <button key={i} onClick={() => setSection(i === 0 || i === 1 ? "appointments" : i === 2 ? "results" : "overview")} className="text-left bg-surface border border-line rounded-2xl p-3 md:p-6 flex flex-col gap-1 relative overflow-hidden hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(10,31,58,0.08)] hover:border-brand/30 transition-all min-w-0">
+                      <div className={`w-7 h-7 md:w-9 md:h-9 rounded-xl grid place-items-center mb-1.5 md:mb-2 ${s.color === "accent" ? "bg-accent-soft text-accent" : s.color === "warn" ? "bg-warn-soft text-warn" : s.color === "danger" ? "bg-danger-soft text-danger" : "bg-brand-soft text-brand"}`}>
+                        <s.icon className="w-[14px] md:w-[18px] h-[14px] md:h-[18px]" />
                       </div>
-                      <div className={`text-[10.5px] md:text-xs font-semibold ${s.color === "accent" ? "text-accent" : s.color === "warn" ? "text-warn" : s.color === "danger" ? "text-danger" : "text-brand"}`}>↑ {s.trend}</div>
-                      <div className={`absolute top-2 md:top-3 right-2 md:right-3 w-6 h-6 md:w-9 md:h-9 rounded-[10px] grid place-items-center ${s.color === "accent" ? "bg-accent-soft text-accent" : s.color === "warn" ? "bg-warn-soft text-warn" : s.color === "danger" ? "bg-danger-soft text-danger" : "bg-brand-soft text-brand"}`}>
-                        {i === 0 ? <Calendar className="w-3 md:w-4 h-3 md:h-4" /> : i === 1 ? <FileText className="w-3 md:w-4 h-3 md:h-4" /> : i === 2 ? <FileText className="w-3 md:w-4 h-3 md:h-4" /> : <Star className="w-3 md:w-4 h-3 md:h-4" />}
+                      <div className="text-[9.5px] md:text-[11.5px] text-muted uppercase tracking-wider font-bold truncate">{s.label}</div>
+                      <div className="font-display font-medium text-ink tracking-tight tabular-nums leading-none inline-flex items-baseline" style={{ fontSize: "clamp(22px, 6vw, 40px)" }}>
+                        <CountUp to={s.num} decimals={s.decimals ?? 0} />
+                        {s.em && <em className="italic text-[0.5em] md:text-[0.55em] text-brand font-normal not-italic ml-0.5">{s.em}</em>}
                       </div>
+                      <div className={`text-[9.5px] md:text-[11.5px] font-semibold mt-0.5 md:mt-1 truncate ${s.color === "accent" ? "text-accent" : s.color === "warn" ? "text-warn" : s.color === "danger" ? "text-danger" : "text-brand"}`}>↑ {s.trend}</div>
                     </button>
                   ))}
                 </div>
 
-                <div className="relative overflow-hidden rounded-2xl p-5 md:p-8 text-white grid lg:grid-cols-[1fr_auto] gap-5 items-center" style={{ background: "linear-gradient(135deg, var(--brand-ink) 0%, var(--brand) 100%)", color: "#fff" }}>
-                  <div className="absolute bottom-[-80px] right-[-80px] w-[320px] h-[320px] rounded-full" style={{ background: "radial-gradient(closest-side, rgba(255,255,255,.14), transparent 70%)" }} />
-                  <div className="relative z-10">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/15 rounded-full text-[10px] md:text-[11.5px] font-semibold uppercase tracking-wider mb-3">
+                <div className="relative overflow-hidden rounded-2xl p-4 md:p-8 text-white grid lg:grid-cols-[1fr_auto] gap-4 md:gap-5 items-center" style={{ background: "linear-gradient(135deg, var(--brand-ink) 0%, var(--brand) 100%)", color: "#fff" }}>
+                  <div className="absolute bottom-[-80px] right-[-80px] w-[320px] h-[320px] rounded-full pointer-events-none" style={{ background: "radial-gradient(closest-side, rgba(255,255,255,.14), transparent 70%)" }} />
+                  <div className="relative z-10 min-w-0">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 md:px-3 py-1 bg-white/15 rounded-full text-[9.5px] md:text-[11.5px] font-semibold uppercase tracking-wider mb-2.5 md:mb-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#35D59B] shadow-[0_0_8px_#35D59B]" /> Keyingi qabul · 3 kundan keyin
                     </span>
-                    <h3 className="font-display text-xl md:text-[32px] font-normal tracking-tight leading-tight mb-2">
+                    <h3 className="font-display text-[20px] md:text-[32px] font-normal tracking-tight leading-tight mb-2">
                       Dr. Alisher <em className="italic text-[#BBD1EC]">Qodirov</em> bilan
                     </h3>
                     <div className="flex items-center gap-3 my-3 md:my-4">
-                      <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl bg-white/14 grid place-items-center"><Plus className="w-5 h-5 opacity-90" /></div>
-                      <div>
-                        <div className="font-semibold text-[13px] md:text-[15px]">Kardiolog · Markaziy klinika</div>
-                        <div className="text-[11.5px] md:text-[12.5px] opacity-85">Birlamchi konsultatsiya · 30 daqiqa</div>
+                      <div className="w-9 h-9 md:w-11 md:h-11 rounded-xl bg-white/14 grid place-items-center shrink-0"><Plus className="w-[18px] md:w-5 h-[18px] md:h-5 opacity-90" /></div>
+                      <div className="min-w-0">
+                        <div className="font-semibold text-[12.5px] md:text-[15px] truncate">Kardiolog · Markaziy klinika</div>
+                        <div className="text-[11px] md:text-[12.5px] opacity-85">Birlamchi konsultatsiya · 30 daqiqa</div>
                       </div>
                     </div>
-                    <div className="flex flex-col md:flex-row gap-2 md:gap-7 text-[13px]">
-                      {[{ k: "Sana", v: "7-noyabr, Juma" }, { k: "Vaqt", v: "14:30" }, { k: "Xona", v: "№ 207, 2-qavat" }].map((cell, i) => (
-                        <div key={i}>
-                          <div className="text-[10px] md:text-[11px] opacity-75 uppercase tracking-wider font-semibold">{cell.k}</div>
-                          <div className="font-display font-medium text-[15px] md:text-lg tracking-tight">{cell.v}</div>
+                    <div className="grid grid-cols-3 md:flex md:flex-row gap-2 md:gap-7 text-[13px]">
+                      {[{ k: "Sana", v: "7-noy, Juma" }, { k: "Vaqt", v: "14:30" }, { k: "Xona", v: "№ 207" }].map((cell, i) => (
+                        <div key={i} className="min-w-0">
+                          <div className="text-[9.5px] md:text-[11px] opacity-75 uppercase tracking-wider font-semibold">{cell.k}</div>
+                          <div className="font-display font-medium text-[13px] md:text-lg tracking-tight truncate">{cell.v}</div>
                         </div>
                       ))}
                     </div>
                   </div>
-                  <div className="flex md:flex-col gap-2 relative z-10">
-                    <a href="https://maps.google.com" target="_blank" rel="noopener" style={{ color: "var(--brand-ink)" }} className="btn btn-sm bg-white !text-brand-ink hover:bg-[#F0F6FF] border-white font-semibold justify-center flex-1 md:flex-none"><MapPin className="w-3.5 h-3.5" />Yo&apos;nalish</a>
-                    <button onClick={() => toast.show("Qabul vaqtini o'zgartirish ochildi", "info")} style={{ color: "#fff" }} className="btn btn-sm bg-transparent !text-white border border-white/30 hover:bg-white/10 font-semibold justify-center flex-1 md:flex-none">O&apos;zgartirish</button>
-                    <button onClick={() => { if (confirm("Qabulni bekor qilmoqchimisiz?")) toast.show("Qabul bekor qilindi", "success"); }} style={{ color: "#fff" }} className="btn btn-sm bg-transparent !text-white border border-white/30 hover:bg-white/10 font-semibold justify-center flex-1 md:flex-none hidden md:inline-flex">Bekor qilish</button>
+                  <div className="grid grid-cols-2 md:flex md:flex-col gap-2 relative z-10">
+                    <a href="https://maps.google.com" target="_blank" rel="noopener" style={{ color: "var(--brand-ink)" }} className="btn btn-sm bg-white !text-brand-ink hover:bg-[#F0F6FF] border-white font-semibold justify-center md:flex-none"><MapPin className="w-3.5 h-3.5" />Yo&apos;nalish</a>
+                    <button onClick={() => toast.show("Qabul vaqtini o'zgartirish ochildi", "info")} style={{ color: "#fff" }} className="btn btn-sm bg-transparent !text-white border border-white/30 hover:bg-white/10 font-semibold justify-center md:flex-none">O&apos;zgartirish</button>
+                    <button onClick={() => { if (confirm("Qabulni bekor qilmoqchimisiz?")) toast.show("Qabul bekor qilindi", "success"); }} style={{ color: "#fff" }} className="btn btn-sm bg-transparent !text-white border border-white/30 hover:bg-white/10 font-semibold justify-center md:flex-none hidden md:inline-flex">Bekor qilish</button>
                   </div>
                 </div>
 
@@ -451,27 +465,44 @@ function DashboardShell() {
             {section === "profile" && (
               <div className="flex flex-col gap-5">
                 <PageHead title="Profil" accent="sozlamalari" subtitle="Shaxsiy va tibbiy ma'lumotlaringizni tahrirlang" />
-                <form onSubmit={saveProfile} className="bg-surface border border-line rounded-2xl p-6 flex flex-col gap-5">
-                  <div className="grid md:grid-cols-2 gap-4">
+
+                {/* Mobile-only user hero card */}
+                <div className="lg:hidden bg-surface border border-line rounded-2xl p-4 flex items-center gap-3">
+                  <div className="w-14 h-14 rounded-full grid place-items-center text-white font-bold text-lg shrink-0" style={{ background: "linear-gradient(135deg, #4D94F5, #0E3F8C)", color: "#fff" }}>{profile.firstName[0]}{profile.lastName[0]}</div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-bold text-[15px] text-ink truncate">{profile.firstName} {profile.lastName}</div>
+                    <div className="text-[11px] text-muted tabular-nums mt-0.5">ID MC-01-24892 · Bemor</div>
+                  </div>
+                </div>
+
+                <form onSubmit={saveProfile} className="bg-surface border border-line rounded-2xl p-4 md:p-6 flex flex-col gap-4 md:gap-5">
+                  <div className="grid sm:grid-cols-2 gap-3 md:gap-4">
                     <PField label="Ism"><input value={profile.firstName} onChange={(e) => setProfile({ ...profile, firstName: e.target.value })} className="field" /></PField>
                     <PField label="Familiya"><input value={profile.lastName} onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} className="field" /></PField>
                   </div>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <PField label="Telefon"><div className="relative"><Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" /><input value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} className="field pl-10" /></div></PField>
-                    <PField label="Email"><div className="relative"><Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" /><input type="email" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} className="field pl-10" /></div></PField>
+                  <div className="grid sm:grid-cols-2 gap-3 md:gap-4">
+                    <PField label="Telefon"><div className="relative"><Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-brand z-10 pointer-events-none" /><input value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} className="field" style={{ paddingLeft: "2.5rem" }} /></div></PField>
+                    <PField label="Email"><div className="relative"><Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-brand z-10 pointer-events-none" /><input type="email" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} className="field" style={{ paddingLeft: "2.5rem" }} /></div></PField>
                   </div>
-                  <div className="grid md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                     <PField label="Tug'ilgan sana"><input type="date" value={profile.dob} onChange={(e) => setProfile({ ...profile, dob: e.target.value })} className="field" /></PField>
                     <PField label="Jinsi"><select value={profile.gender} onChange={(e) => setProfile({ ...profile, gender: e.target.value })} className="field"><option>Erkak</option><option>Ayol</option></select></PField>
-                    <PField label="Qon guruhi"><select value={profile.bloodType} onChange={(e) => setProfile({ ...profile, bloodType: e.target.value })} className="field">{["O (I) Rh+","O (I) Rh-","A (II) Rh+","A (II) Rh-","B (III) Rh+","B (III) Rh-","AB (IV) Rh+","AB (IV) Rh-"].map((b) => <option key={b}>{b}</option>)}</select></PField>
+                    <div className="col-span-2 md:col-span-1">
+                      <PField label="Qon guruhi"><select value={profile.bloodType} onChange={(e) => setProfile({ ...profile, bloodType: e.target.value })} className="field">{["O (I) Rh+","O (I) Rh-","A (II) Rh+","A (II) Rh-","B (III) Rh+","B (III) Rh-","AB (IV) Rh+","AB (IV) Rh-"].map((b) => <option key={b}>{b}</option>)}</select></PField>
+                    </div>
                   </div>
                   <PField label="Manzil"><input value={profile.address} onChange={(e) => setProfile({ ...profile, address: e.target.value })} className="field" /></PField>
                   <PField label="Allergiya va diqqat talab qiladigan holatlar"><textarea rows={3} value={profile.allergies} onChange={(e) => setProfile({ ...profile, allergies: e.target.value })} className="field resize-none" /></PField>
-                  <div className="flex gap-2 pt-2">
-                    <button type="submit" className="btn btn-primary"><Save className="w-4 h-4" />Saqlash</button>
-                    <button type="button" onClick={() => { try { const raw = localStorage.getItem(PATIENT_KEY); if (raw) setProfile((p) => ({ ...p, ...JSON.parse(raw) })); } catch { /* ignore */ } toast.show("O'zgarishlar bekor qilindi", "info"); }} className="btn btn-outline">Bekor qilish</button>
+                  <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                    <button type="submit" className="btn btn-primary w-full sm:w-auto justify-center"><Save className="w-4 h-4" />Saqlash</button>
+                    <button type="button" onClick={() => { try { const raw = localStorage.getItem(PATIENT_KEY); if (raw) setProfile((p) => ({ ...p, ...JSON.parse(raw) })); } catch { /* ignore */ } toast.show("O'zgarishlar bekor qilindi", "info"); }} className="btn btn-outline w-full sm:w-auto justify-center">Bekor qilish</button>
                   </div>
                 </form>
+
+                {/* Mobile logout — accessible without horizontal scroll */}
+                <button onClick={onLogout} className="lg:hidden btn btn-outline w-full justify-center !text-danger !border-danger/30 hover:!bg-danger-soft">
+                  <LogOut className="w-4 h-4" />Chiqish
+                </button>
               </div>
             )}
 
@@ -484,14 +515,14 @@ function DashboardShell() {
 
 function PageHead({ title, accent, subtitle, action }: { title: string; accent: string; subtitle: string; action?: React.ReactNode }) {
   return (
-    <div className="flex items-end justify-between gap-4 flex-wrap">
+    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-4 sm:flex-wrap">
       <div>
-        <h1 className="font-display font-normal text-2xl md:text-[36px] tracking-tight leading-tight">
+        <h1 className="font-display font-normal text-[26px] md:text-[36px] tracking-tight leading-tight">
           {title} <em className="italic text-brand">{accent}</em>
         </h1>
-        <p className="text-sm text-ink-soft mt-1.5">{subtitle}</p>
+        <p className="text-[13px] md:text-sm text-ink-soft mt-1 md:mt-1.5">{subtitle}</p>
       </div>
-      {action}
+      {action ? <div className="flex gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">{action}</div> : null}
     </div>
   );
 }
@@ -499,7 +530,7 @@ function PageHead({ title, accent, subtitle, action }: { title: string; accent: 
 function PField({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-bold text-ink-soft mb-1.5 uppercase tracking-wide">{label}</label>
+      <label className="block text-[10.5px] md:text-xs font-bold text-ink-soft mb-1.5 uppercase tracking-wide">{label}</label>
       {children}
     </div>
   );

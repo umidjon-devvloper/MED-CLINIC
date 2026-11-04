@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   X, Plus, Calendar, Sun, Moon, CloudSun, ChevronLeft, ChevronRight,
@@ -38,11 +39,22 @@ export default function BookingPage() {
 
 function BookingFlow() {
   const toast = useToast();
-  const [step, setStep] = useState(3);
-  const [selectedDay, setSelectedDay] = useState(7);
-  const [selectedTime, setSelectedTime] = useState("14:30");
+  const searchParams = useSearchParams();
+  const queryDoctorId = searchParams.get("doctor");
+  const queryDoctor = queryDoctorId ? doctors.find((d) => d.id === queryDoctorId) : undefined;
+  const queryTime = searchParams.get("time");
+  const queryDateDay = (() => {
+    const d = searchParams.get("date");
+    if (!d) return null;
+    const n = parseInt(d.slice(-2), 10);
+    return Number.isFinite(n) ? n : null;
+  })();
+
+  const [step, setStep] = useState(queryDoctor ? 3 : 3);
+  const [selectedDay, setSelectedDay] = useState(queryDateDay ?? 7);
+  const [selectedTime, setSelectedTime] = useState(queryTime ?? "14:30");
   const [selectedSpecialty, setSelectedSpecialty] = useState("kardio");
-  const [selectedDoctor, setSelectedDoctor] = useState("alisher-qodirov");
+  const [selectedDoctor, setSelectedDoctor] = useState(queryDoctor?.id ?? "alisher-qodirov");
   const [termsAccepted, setTermsAccepted] = useState(true);
 
   // Step 4 form state (prefilled from the signed-in user)
@@ -61,6 +73,12 @@ function BookingFlow() {
       if (u.phone) setPhone(u.phone);
     }
   }, []);
+
+  useEffect(() => {
+    if (queryDoctorId && doctors.some((d) => d.id === queryDoctorId)) {
+      setSelectedDoctor(queryDoctorId);
+    }
+  }, [queryDoctorId]);
 
   const doctor = doctors.find((d) => d.id === selectedDoctor) ?? doctors[0];
 
@@ -155,7 +173,7 @@ function BookingFlow() {
                 {stepTitle(step)}
               </h1>
               <p className="text-[14px] md:text-[15px] text-ink-soft max-w-[55ch]">
-                {stepSubtitle(step)}
+                {stepSubtitle(step, doctor.name)}
               </p>
             </div>
 
@@ -483,11 +501,11 @@ function stepTitle(step: number) {
   }
 }
 
-function stepSubtitle(step: number) {
+function stepSubtitle(step: number, doctorName: string) {
   switch (step) {
     case 1: return "24 ta tibbiy yo'nalish. Shikoyat yoki tashxis bo'yicha mos keluvchi mutaxassisni toping.";
-    case 2: return "Reyting, tajriba va narx bo'yicha mos kelgan mutaxassis. 24 ta kardiolog topildi.";
-    case 3: return "Dr. Alisher Qodirov kalendari. Yashil nuqta — bo'sh kunlar. Vaqtni tanlagach, keyingi qadamga o'ting.";
+    case 2: return "Reyting, tajriba va narx bo'yicha mos kelgan mutaxassisni tanlang.";
+    case 3: return `${doctorName} kalendari. Yashil nuqta — bo'sh kunlar. Vaqtni tanlagach, keyingi qadamga o'ting.`;
     case 4: return "Qabul uchun kerakli minimal ma'lumotlar. SMS tasdiq telefonga yuboriladi.";
     case 5: return "Ma'lumotlarni yana bir bor tekshiring. Hammasi to'g'ri bo'lsa, SMS tasdiqlashga o'ting.";
     case 6: return "";
