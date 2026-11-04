@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Plus, Phone, ChevronDown, LogOut, LayoutDashboard, Stethoscope, UserCircle, MapPin } from "lucide-react";
+import { Plus, Phone, ChevronDown, LogOut, LayoutDashboard, Stethoscope, UserCircle, MapPin, Search, CalendarPlus } from "lucide-react";
 import { getUser, logout, type User } from "@/lib/auth";
 
 const navLinks = [
@@ -101,75 +101,90 @@ export function Header() {
         </div>
       </div>
 
-      {/* Main nav — compact, sticky, modern with subtle backdrop blur */}
-      <nav className="sticky top-0 z-30 bg-surface/80 backdrop-blur-md border-b border-line/60">
-        <div className="container-wide flex items-center gap-6 py-3.5 md:py-4">
-          <Link href="/" className="flex items-center gap-2 font-extrabold text-[1.1rem] tracking-tight shrink-0">
-            <span className="w-9 h-9 rounded-[10px] grid place-items-center text-white relative" style={{ background: "linear-gradient(135deg, var(--brand) 0%, var(--brand-ink) 100%)", color: "#fff" }}>
-              <Plus className="w-[18px] h-[18px]" strokeWidth={2.75} />
+      {/* Main nav — blends with the page background */}
+      <nav className="sticky top-0 z-30 bg-bg/70 backdrop-blur-md">
+        <div className="container-wide flex items-center gap-6 py-4 md:py-5">
+          <Link href="/" className="flex items-center gap-2.5 font-extrabold text-[1.2rem] tracking-tight shrink-0 group">
+            <span className="w-11 h-11 rounded-[12px] grid place-items-center text-white relative transition-transform group-hover:scale-105" style={{ background: "linear-gradient(135deg, var(--brand) 0%, var(--brand-ink) 100%)", color: "#fff", boxShadow: "0 4px 14px rgba(30,109,216,0.28)" }}>
+              <Plus className="w-[21px] h-[21px]" strokeWidth={2.75} />
               <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-accent border-2 border-surface" />
             </span>
-            <span className="text-ink">MED</span>
-            <em className="font-display italic font-medium text-brand text-[1.2rem] tracking-tight -ml-0.5">CLINIC</em>
+            <span className="text-ink text-[1.15rem]">MED</span>
+            <em className="font-display italic font-medium text-brand text-[1.4rem] tracking-tight -ml-0.5">CLINIC</em>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-1 ml-4 xl:ml-6">
+          {/* Editorial nav links — larger, confident, underline indicator */}
+          <div className="hidden lg:flex items-center gap-1 ml-6 xl:ml-10">
             {navLinks.map((link) => {
               const active = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`nav-link relative px-2 xl:px-3 py-2 text-[13.5px] font-medium whitespace-nowrap transition-colors ${active ? "text-ink font-semibold" : "text-ink-soft hover:text-ink"}`}
+                  className={`relative px-3 xl:px-4 py-2.5 text-[15px] whitespace-nowrap transition-colors ${active ? "text-ink font-semibold" : "text-ink-soft font-medium hover:text-ink"}`}
                 >
                   {link.label}
-                  {active && <span className="absolute left-2 right-2 xl:left-3 xl:right-3 -bottom-[1px] h-0.5 bg-brand rounded-full" />}
+                  {active && <span className="absolute left-3 right-3 xl:left-4 xl:right-4 -bottom-[1px] h-[2.5px] rounded-full" style={{ background: "linear-gradient(90deg, var(--brand), var(--accent))" }} />}
                 </Link>
               );
             })}
           </div>
 
-          <div className="ml-auto flex gap-2 items-center shrink-0">
+          <div className="ml-auto flex gap-2.5 items-center shrink-0">
+            {/* Search icon */}
+            <Link href="/doctors" aria-label="Qidiruv" className="hidden md:grid w-11 h-11 rounded-[11px] bg-bg/60 border border-line/60 text-ink-soft hover:text-brand hover:border-brand/40 hover:bg-brand-soft/50 place-items-center transition-all">
+              <Search className="w-[18px] h-[18px]" />
+            </Link>
+
+            {/* Separator */}
+            <span className="hidden md:block w-px h-7 bg-line/70 mx-0.5" />
+
             {user ? (
               <div ref={menuRef} className="relative hidden sm:block">
-                <button onClick={() => setMenuOpen((v) => !v)} className="flex items-center gap-2 pl-1 pr-2.5 py-1 bg-brand-soft/50 hover:bg-brand-soft border border-transparent hover:border-brand/20 rounded-full transition-colors max-w-[180px]">
-                  <span className="w-8 h-8 rounded-full text-white font-bold grid place-items-center text-[12px] shrink-0" style={{ background: "linear-gradient(135deg, var(--brand), var(--brand-ink))", color: "#fff" }}>
+                <button onClick={() => setMenuOpen((v) => !v)} className="flex items-center gap-2.5 pl-1.5 pr-3.5 py-1.5 bg-brand-soft/50 hover:bg-brand-soft border border-transparent hover:border-brand/20 rounded-full transition-all max-w-[220px]">
+                  <span className="w-8 h-8 rounded-full text-white font-bold grid place-items-center text-[12.5px] shrink-0" style={{ background: "linear-gradient(135deg, var(--brand), var(--brand-ink))", color: "#fff" }}>
                     {initialsFor(user)}
                   </span>
-                  <span className="hidden xl:inline text-[13px] font-semibold text-ink max-w-[100px] truncate">
+                  <span className="hidden xl:inline text-[14px] font-semibold text-ink max-w-[110px] truncate">
                     {displayName(user)}
                   </span>
                   <ChevronDown className={`w-3.5 h-3.5 text-muted transition-transform shrink-0 ${menuOpen ? "rotate-180" : ""}`} />
                 </button>
                 {menuOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-60 bg-surface border border-line rounded-xl shadow-xl z-30 overflow-hidden">
-                    <div className="px-4 py-3 border-b border-line bg-bg">
+                  <div className="absolute right-0 top-full mt-2 w-64 bg-surface border border-line rounded-2xl shadow-[0_12px_32px_rgba(10,31,58,0.14)] z-30 overflow-hidden">
+                    <div className="px-4 py-3.5 border-b border-line bg-bg/60">
                       <div className="font-bold text-sm text-ink truncate">{user.firstName || "Foydalanuvchi"} {user.lastName || ""}</div>
                       <div className="text-[12px] text-muted inline-flex items-center gap-1.5 mt-0.5">
                         {user.role === "doctor" ? <><Stethoscope className="w-3 h-3" />{user.specialty || "Shifokor"}</> : <><UserCircle className="w-3 h-3" />Bemor</>}
                       </div>
                     </div>
-                    <Link href={user.role === "doctor" ? "/doctor-dashboard" : "/dashboard"} onClick={() => setMenuOpen(false)} className="block px-4 py-2.5 text-sm hover:bg-bg text-ink">
-                      <LayoutDashboard className="w-4 h-4 text-ink-soft inline mr-2.5" />
+                    <Link href={user.role === "doctor" ? "/doctor-dashboard" : "/dashboard"} onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-bg text-ink transition-colors">
+                      <LayoutDashboard className="w-4 h-4 text-ink-soft" />
                       {user.role === "doctor" ? "Shifokor paneli" : "Shaxsiy kabinet"}
                     </Link>
                     {user.role === "patient" && (
-                      <Link href="/booking" onClick={() => setMenuOpen(false)} className="block px-4 py-2.5 text-sm hover:bg-bg text-ink border-t border-line">
-                        <Phone className="w-4 h-4 text-ink-soft inline mr-2.5" />Qabulga yozilish
+                      <Link href="/booking" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-bg text-ink border-t border-line transition-colors">
+                        <CalendarPlus className="w-4 h-4 text-ink-soft" />Qabulga yozilish
                       </Link>
                     )}
-                    <button onClick={onLogout} className="w-full text-left px-4 py-2.5 text-sm text-danger hover:bg-danger-soft border-t border-line transition-colors flex items-center gap-2.5">
+                    <button onClick={onLogout} className="w-full text-left px-4 py-2.5 text-sm text-danger hover:bg-danger-soft border-t border-line transition-colors flex items-center gap-3">
                       <LogOut className="w-4 h-4" />Chiqish
                     </button>
                   </div>
                 )}
               </div>
             ) : (
-              <Link href="/login" style={{ color: "var(--ink)" }} className="hidden sm:inline-block text-[13.5px] font-medium px-2.5 py-1.5 hover:text-brand transition-colors whitespace-nowrap">Kirish</Link>
+              <Link href="/login" className="hidden sm:inline-flex items-center gap-1.5 text-[14.5px] font-semibold text-ink px-3.5 h-11 rounded-[11px] hover:bg-bg/60 hover:text-brand transition-all whitespace-nowrap">
+                <UserCircle className="w-[17px] h-[17px]" />
+                Kirish
+              </Link>
             )}
-            <Link href="/booking" style={{ color: "#fff" }} className="bg-brand hover:bg-brand-ink !text-white px-3.5 xl:px-4 h-9 rounded-[9px] text-[13px] font-semibold inline-flex items-center gap-1 whitespace-nowrap transition-colors">
-              <span className="hidden sm:inline">Qabulga yozilish</span>
-              <span className="sm:hidden">Qabul</span>
+            <Link href="/booking" style={{ color: "#fff" }} className="group relative !text-white px-4 xl:px-5 h-11 rounded-[12px] text-[14px] font-semibold inline-flex items-center gap-2 whitespace-nowrap transition-all overflow-hidden" >
+              <span className="absolute inset-0 transition-transform group-hover:scale-105" style={{ background: "linear-gradient(135deg, var(--brand) 0%, var(--brand-ink) 100%)", boxShadow: "0 6px 18px rgba(30,109,216,0.32)" }} />
+              <CalendarPlus className="w-[17px] h-[17px] relative" strokeWidth={2.5} />
+              <span className="hidden sm:inline relative">Qabulga yozilish</span>
+              <span className="sm:hidden relative">Qabul</span>
+              <span className="relative transition-transform group-hover:translate-x-0.5" style={{ color: "#35D59B" }}>→</span>
             </Link>
           </div>
         </div>

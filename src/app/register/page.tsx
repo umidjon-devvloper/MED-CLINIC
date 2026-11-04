@@ -58,12 +58,12 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="relative min-h-screen grid place-items-center p-4 md:p-6 py-10">
+    <div className="relative min-h-screen flex flex-col md:grid md:place-items-center p-4 md:p-6 md:py-10">
       <AuthBackground />
 
-      {/* Logo top-left */}
-      <Link href="/" className="absolute top-6 left-6 md:top-8 md:left-10 flex items-center gap-2.5 font-extrabold text-lg z-10">
-        <span className="w-10 h-10 rounded-xl grid place-items-center text-white relative" style={{ background: "linear-gradient(135deg, var(--brand), var(--brand-ink))", color: "#fff" }}>
+      {/* Logo — flows at top on mobile, absolute corner on desktop */}
+      <Link href="/" className="relative md:absolute md:top-8 md:left-10 flex items-center gap-2.5 font-extrabold text-lg z-10 self-start mb-8 md:mb-0 md:self-auto">
+        <span className="w-10 h-10 rounded-xl grid place-items-center text-white relative shrink-0" style={{ background: "linear-gradient(135deg, var(--brand), var(--brand-ink))", color: "#fff" }}>
           <Plus className="w-5 h-5" strokeWidth={2.75} />
           <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-accent border-2 border-surface" />
         </span>
@@ -71,7 +71,7 @@ export default function RegisterPage() {
         <em className="font-display italic font-medium text-brand text-[1.2rem] -ml-0.5">CLINIC</em>
       </Link>
 
-      <div className="w-full max-w-lg relative">
+      <div className="w-full max-w-lg relative mx-auto my-auto md:m-0">
         <div className="text-center mb-7">
           <h1 className="font-display font-normal text-ink leading-[1.05] tracking-[-0.02em]" style={{ fontSize: "clamp(30px, 3.5vw, 42px)" }}>
             Yangi <em className="italic" style={{ background: "linear-gradient(135deg, #4D94F5 0%, #1E6DD8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>hisob</em> yarating
