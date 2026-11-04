@@ -1,13 +1,11 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { doctors } from "@/lib/data/doctors";
 
 export const alt = "MED CLINIC — Shifokor";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 const tints: Record<string, string> = {
   blue:     "linear-gradient(135deg, #D7E8FA 0%, #B5D4F2 100%)",
@@ -16,12 +14,23 @@ const tints: Record<string, string> = {
   pink:     "linear-gradient(135deg, #F5DFE8 0%, #ECC2D4 100%)",
 };
 
+async function readPhotoDataUrl(relPath: string): Promise<string | null> {
+  try {
+    const buffer = await readFile(join(process.cwd(), "public", relPath));
+    const ext = relPath.split(".").pop()?.toLowerCase() ?? "webp";
+    const mime = ext === "png" ? "image/png" : ext === "jpg" || ext === "jpeg" ? "image/jpeg" : "image/webp";
+    return `data:${mime};base64,${buffer.toString("base64")}`;
+  } catch {
+    return null;
+  }
+}
+
 export default async function OGImage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const doc = doctors.find((d) => d.id === id);
   if (!doc) return new ImageResponse(<div>Not found</div>, size);
 
-  const photoUrl = `${SITE_URL}${doc.photo}`;
+  const photoUrl = (await readPhotoDataUrl(doc.photo)) ?? "";
 
   return new ImageResponse(
     (

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Plus, Phone, ChevronDown, LogOut, LayoutDashboard, Stethoscope, UserCircle } from "lucide-react";
+import { Plus, Phone, ChevronDown, LogOut, LayoutDashboard, Stethoscope, UserCircle, MapPin } from "lucide-react";
 import { getUser, logout, type User } from "@/lib/auth";
 
 const navLinks = [
@@ -69,24 +69,34 @@ export function Header() {
 
   return (
     <>
-      {/* Slim top strip — just the essentials, no visual weight */}
-      <div className="bg-ink text-[#8AA3C4] text-[11.5px] py-1.5 relative">
-        <div className="container-wide flex justify-between items-center gap-4">
-          <a href="tel:+998712000000" className="inline-flex items-center gap-1.5 hover:text-white transition-colors">
-            <Phone className="w-3 h-3 text-accent" strokeWidth={2.5} />
-            <strong className="text-white font-semibold tracking-wide">+998 71 200 00 00</strong>
-            <span className="hidden md:inline text-[#607994] font-medium">· 24/7</span>
-          </a>
-          <div className="flex gap-4 items-center">
-            <a href="https://t.me/medclinic_uz" className="hidden sm:inline-flex items-center gap-1 hover:text-white">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" /></svg>
-              Telegram
+      {/* Slim top strip — contact, hours, telegram */}
+      <div className="bg-ink text-[#8AA3C4] text-[11.5px] relative" style={{ background: "linear-gradient(90deg, #07122A 0%, #0E1F3D 50%, #07122A 100%)" }}>
+        <div className="container-wide flex justify-between items-center gap-3 py-2">
+          <div className="flex items-center gap-4 min-w-0">
+            <a href="tel:+998712000000" className="inline-flex items-center gap-1.5 hover:text-white transition-colors shrink-0">
+              <span className="w-5 h-5 rounded-md bg-accent/15 grid place-items-center">
+                <Phone className="w-[11px] h-[11px] text-accent" strokeWidth={2.5} />
+              </span>
+              <strong className="text-white font-semibold tracking-wide tabular-nums">+998 71 200 00 00</strong>
             </a>
-            <div className="flex items-center gap-2 text-[10.5px] font-bold uppercase tracking-wider">
-              <span className="text-white">UZ</span>
-              <button type="button" title="Tez orada" disabled className="text-[#607994] opacity-60 cursor-not-allowed hover:text-white">RU</button>
-              <button type="button" title="Coming soon" disabled className="text-[#607994] opacity-60 cursor-not-allowed hover:text-white">EN</button>
-            </div>
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-[#8AA3C4]">
+              <span className="w-1 h-1 rounded-full bg-[#35D59B] shadow-[0_0_6px_#35D59B]" />
+              <span className="font-medium">Hoziroq ochiq · 24/7</span>
+            </span>
+            <span className="hidden lg:inline-flex items-center gap-1.5 text-[#8AA3C4]">
+              <MapPin className="w-[11px] h-[11px] text-[#607994]" />
+              <span className="font-medium">Toshkent, Navoiy 14</span>
+            </span>
+          </div>
+          <div className="flex gap-4 items-center shrink-0">
+            <a href="https://t.me/medclinic_uz" target="_blank" rel="noopener" className="hidden sm:inline-flex items-center gap-1.5 hover:text-white transition-colors">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 text-[#2EA6DE]"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" /></svg>
+              <span className="font-medium">Telegram</span>
+            </a>
+            <Link href="/booking" className="hidden md:inline-flex items-center gap-1 text-white font-semibold hover:text-accent transition-colors">
+              <span>Shoshilinch yordam</span>
+              <span className="text-accent">→</span>
+            </Link>
           </div>
         </div>
       </div>
